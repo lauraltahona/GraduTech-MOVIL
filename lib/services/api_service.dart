@@ -1,9 +1,12 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ApiService {
-  final String baseUrl = 'http://192.168.1.71:5001'; // tu IP local
+  final String baseUrl = dotenv.env['IP'] ?? '';
+  
+
 
   Future<Map<String, dynamic>> login(String correo, String password) async {
     final response = await http.post(
