@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../controllers/registrar_proyecto_controller.dart';
+import '../../controllers/estudiante/registrar_proyecto_controller.dart';
 
 class RegistrarProyectoScreen extends StatefulWidget {
   const RegistrarProyectoScreen({super.key});

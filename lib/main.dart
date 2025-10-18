@@ -10,9 +10,6 @@ Future<void> main() async {
   // 👇 Carga el archivo .env antes de iniciar la app
   await dotenv.load(fileName: ".env");
 
-  // 👇 (opcional) Verifica que cargó bien
-  print('✅ IP desde .env: ${dotenv.env['IP']}');
-
   runApp(const MyApp());
 }
 
