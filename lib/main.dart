@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';  // 👈 importa dotenv
+import 'package:proyecto_movil/screens/docente/homeDocente.dart';
 import 'screens/login_screen.dart';
 import 'screens/estudiante/home_estudiante.dart';
 import 'screens/estudiante/menu_estudiante.dart';
@@ -26,6 +27,9 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginScreen(),
         '/homeEstudiante': (context) => const HomeEstudiante(),
         '/menuEstudiante': (context) => MenuEstudiante(),
+        '/homeDocente': (context)=>  const HomeDocente(),
+        //'/homeJurado':(context) => const HomeJurado();
+
       },
     );
   }
