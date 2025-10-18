@@ -22,7 +22,7 @@ class LoginController {
       }
 
       final rol = user['rol'];
-      final idUsuario = user['idUsuario'];
+      final idUsuario = user['id_usuario'];
       final token = result['token'];
 
       print('Login exitoso: ID=$idUsuario, Rol=$rol');
