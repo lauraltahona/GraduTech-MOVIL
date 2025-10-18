@@ -7,7 +7,8 @@ class RevisionJurados extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Center(
       child: Text(
-        "Aquí irá el formulario de registro del proyecto 🎓",
+        "Aquí irá el formulario de registro del proyecto 🎓"
+        "Y la revisión de jurados 📋",
         style: TextStyle(fontSize: 18),
       ),
     );
