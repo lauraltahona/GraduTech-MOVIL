@@ -27,12 +27,7 @@ class _CalendarioScreenState extends State<CalendarioScreen> {
     final controller = Provider.of<CalendarioController>(context);
 
     return Scaffold(
-      backgroundColor: Colors.green.shade100,
-      appBar: AppBar(
-        backgroundColor: Colors.green.shade700,
-        title: const Text("Calendario de Entregas"),
-        centerTitle: true,
-      ),
+      
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
