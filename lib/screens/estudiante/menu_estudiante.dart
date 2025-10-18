@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_movil/screens/estudiante/calendario.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'registrar_proyecto.dart';
 
 class MenuEstudiante extends StatefulWidget {
@@ -11,27 +13,44 @@ class MenuEstudiante extends StatefulWidget {
 
 class _MenuEstudianteState extends State<MenuEstudiante> {
   int _currentIndex = 0;
-
-  final List<Widget> _pages = const [
-    RegistrarProyectoScreen(),
-    Center(child: Text('Calendario')),
-    Center(child: Text('Mi Proyecto')),
-  ];
+  int? _idUsuario;
 
   @override
   void initState() {
     super.initState();
     _currentIndex = widget.tabIndex;
+    _cargarUsuario();
   }
 
+  Future<void> _cargarUsuario() async {
+    final prefs = await SharedPreferences.getInstance();
+    final id = prefs.getInt('idUsuario');
+    setState(() {
+      _idUsuario = id;
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
+    if (_idUsuario == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    // ✅ Aquí ya puedes crear la lista porque _idUsuario tiene valor
+    final List<Widget> pages = [
+      const RegistrarProyectoScreen(),
+      CalendarioScreen(idUsuario: _idUsuario!),
+      const Center(child: Text('Mi Proyecto')),
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Menú Estudiante'),
         backgroundColor: Colors.green,
       ),
-      body: _pages[_currentIndex],
+      body: pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) => setState(() => _currentIndex = index),
