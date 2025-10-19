@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:proyecto_movil/controllers/estudiante/calendario_controller.dart';
+import 'package:proyecto_movil/controllers/estudiante/mi_proyecto_controller.dart';
 import 'package:proyecto_movil/screens/estudiante/calendario.dart';
 import 'registrar_proyecto.dart';
+import 'package:proyecto_movil/screens/estudiante/mi_proyecto.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuEstudiante extends StatefulWidget {
@@ -32,39 +34,120 @@ class _MenuEstudianteState extends State<MenuEstudiante> {
     });
   }
 
+  Widget _buildDrawer(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            decoration: const BoxDecoration(
+              color: Colors.green,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(
+                  Icons.school,
+                  color: Colors.white,
+                  size: 48,
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'Menú Estudiante',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.folder_open),
+            title: const Text('Registrar Proyecto'),
+            selected: _currentIndex == 0,
+            onTap: () {
+              Navigator.pop(context);
+              setState(() => _currentIndex = 0);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.calendar_today),
+            title: const Text('Calendario'),
+            selected: _currentIndex == 1,
+            onTap: () {
+              Navigator.pop(context);
+              setState(() => _currentIndex = 1);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.assignment),
+            title: const Text('Mi Proyecto'),
+            selected: _currentIndex == 2,
+            onTap: () {
+              Navigator.pop(context);
+              setState(() => _currentIndex = 2);
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text('Cerrar Sesión'),
+            onTap: () async {
+              final prefs = await SharedPreferences.getInstance();
+              await prefs.clear();
+              if (context.mounted) {
+                Navigator.pushReplacementNamed(context, '/login');
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_idUsuario == null) {
-      return const Center(child: CircularProgressIndicator());
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
     }
 
-    final List<Widget> pages = [
-      const RegistrarProyectoScreen(),
-      // Aquí agregamos el provider solo para esta pantalla
-      ChangeNotifierProvider(
-        create: (_) => CalendarioController(),
-        child: CalendarioScreen(idUsuario: _idUsuario!),
-      ),
-      const Center(child: Text('Mi Proyecto')),
-    ];
-
+    // Los providers ya existen globalmente, solo usamos el Scaffold
     return Scaffold(
       appBar: AppBar(
         title: const Text('Menú Estudiante'),
         backgroundColor: Colors.green,
       ),
-      body: pages[_currentIndex],
+      drawer: _buildDrawer(context),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: [
+          const RegistrarProyectoScreen(),
+          CalendarioScreen(idUsuario: _idUsuario!),
+          MiProyectoScreen(idUsuario: _idUsuario!),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) => setState(() => _currentIndex = index),
         selectedItemColor: Colors.green,
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.folder_open), label: 'Proyecto'),
+            icon: Icon(Icons.folder_open),
+            label: 'Proyecto',
+          ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today), label: 'Calendario'),
+            icon: Icon(Icons.calendar_today),
+            label: 'Calendario',
+          ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.assignment), label: 'Mi Proyecto'),
+            icon: Icon(Icons.assignment),
+            label: 'Mi Proyecto',
+          ),
         ],
       ),
     );

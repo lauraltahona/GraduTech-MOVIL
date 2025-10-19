@@ -49,7 +49,7 @@ class _RegistrarProyectoScreenState extends State<RegistrarProyectoScreen> {
                     labelText: 'Tipo de proyecto',
                     border: OutlineInputBorder(),
                   ),
-                  value: controller.tipoProyecto.isEmpty ? null : controller.tipoProyecto,
+                  initialValue: controller.tipoProyecto.isEmpty ? null : controller.tipoProyecto,
                   items: const [
                     DropdownMenuItem(value: 'Pasantía', child: Text('Pasantía')),
                     DropdownMenuItem(value: 'Proyecto de grado', child: Text('Proyecto de grado')),

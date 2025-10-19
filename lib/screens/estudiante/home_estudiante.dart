@@ -16,7 +16,7 @@ class _HomeEstudianteState extends State<HomeEstudiante> {
         title: const Text('Bienvenido a GraduTech'),
         backgroundColor: Colors.green,
       ),
-      drawer: Drawer( // 👈 este es el menú tipo hamburguesa
+      drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -40,7 +40,7 @@ class _HomeEstudianteState extends State<HomeEstudiante> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => MenuEstudiante(tabIndex: 0)),
+                  MaterialPageRoute(builder: (_) => const MenuEstudiante(tabIndex: 0)),
                 );
               },
             ),
@@ -50,10 +50,21 @@ class _HomeEstudianteState extends State<HomeEstudiante> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => MenuEstudiante(tabIndex: 1)),
+                  MaterialPageRoute(builder: (_) => const MenuEstudiante(tabIndex: 1)),
                 );
               },
             ),
+            ListTile(
+              leading: const Icon(Icons.assignment),
+              title: const Text('Mi Proyecto'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const MenuEstudiante(tabIndex: 2)),
+                );
+              },
+            ),
+            const Divider(),
             ListTile(
               leading: const Icon(Icons.logout),
               title: const Text('Cerrar Sesión'),

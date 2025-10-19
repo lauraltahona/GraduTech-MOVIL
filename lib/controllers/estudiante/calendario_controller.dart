@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_movil/services/entrega_service.dart';
+import 'package:proyecto_movil/services/estudiante/entrega_service.dart';
 
 class CalendarioController extends ChangeNotifier {
   final EntregaService _service = EntregaService();

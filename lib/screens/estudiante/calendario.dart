@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:provider/provider.dart';
 import 'package:proyecto_movil/controllers/estudiante/calendario_controller.dart';
-import 'package:proyecto_movil/widgets/calendario_widgets.dart';
+import 'package:proyecto_movil/widgets/estudiante/calendario_widgets.dart';
 
 class CalendarioScreen extends StatefulWidget {
   final int idUsuario;
