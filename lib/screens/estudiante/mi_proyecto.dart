@@ -33,25 +33,47 @@ class _MiProyectoScreenState extends State<MiProyectoScreen> {
     final controller = Provider.of<MiProyectoController>(context);
 
     return Scaffold(
-      backgroundColor: Colors.green.shade100,
+      backgroundColor: const Color(0xFFE8F5E9), // Verde suave de fondo
       body: controller.cargando
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(
+              child: CircularProgressIndicator(
+                color: Color(0xFF2E7D32), // Verde oscuro
+              ),
+            )
           : controller.error != null
               ? Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(controller.error!),
+                      const Icon(
+                        Icons.error_outline,
+                        color: Color(0xFFFF6F00), // Naranja
+                        size: 64,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        controller.error!,
+                        style: const TextStyle(color: Color(0xFF424242)),
+                      ),
                       const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: _cargarProyecto,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF2E7D32),
+                          foregroundColor: Colors.white,
+                        ),
                         child: const Text('Reintentar'),
                       ),
                     ],
                   ),
                 )
               : controller.proyecto == null
-                  ? const Center(child: Text("No se encontró proyecto."))
+                  ? const Center(
+                      child: Text(
+                        "No se encontró proyecto.",
+                        style: TextStyle(color: Color(0xFF424242)),
+                      ),
+                    )
                   : MiProyectoCard(
                       proyecto: controller.proyecto!,
                       fechaFormateada: controller.formatearFecha(
@@ -59,10 +81,10 @@ class _MiProyectoScreenState extends State<MiProyectoScreen> {
                         controller.proyecto!['createdAt'],
                       ),
                       onEditar: () {
-                        // Implementa la navegación a editar proyecto
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('Función de editar en desarrollo'),
+                            backgroundColor: Color(0xFF2E7D32),
                           ),
                         );
                       },
