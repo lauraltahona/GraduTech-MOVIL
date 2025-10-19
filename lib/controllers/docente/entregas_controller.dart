@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/entregas_service.dart';
+import 'package:proyecto_movil/services/docente/entregas_service.dart';
 
 class EntregasController extends ChangeNotifier {
   final EntregasService _service = EntregasService();
