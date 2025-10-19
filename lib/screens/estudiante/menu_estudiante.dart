@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:proyecto_movil/controllers/estudiante/calendario_controller.dart';
 import 'package:proyecto_movil/controllers/estudiante/mi_proyecto_controller.dart';
 import 'package:proyecto_movil/screens/estudiante/calendario.dart';
+import 'package:proyecto_movil/screens/estudiante/entregas_estudiante.dart';
 import 'registrar_proyecto.dart';
 import 'package:proyecto_movil/screens/estudiante/mi_proyecto.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,18 +41,12 @@ class _MenuEstudianteState extends State<MenuEstudiante> {
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            decoration: const BoxDecoration(
-              color: Colors.green,
-            ),
+            decoration: const BoxDecoration(color: Colors.green),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
-                Icon(
-                  Icons.school,
-                  color: Colors.white,
-                  size: 48,
-                ),
+                Icon(Icons.school, color: Colors.white, size: 48),
                 SizedBox(height: 8),
                 Text(
                   'Menú Estudiante',
@@ -91,6 +86,15 @@ class _MenuEstudianteState extends State<MenuEstudiante> {
               setState(() => _currentIndex = 2);
             },
           ),
+          ListTile(
+            leading: const Icon(Icons.upload_file),
+            title: const Text('Entregas'),
+            selected: _currentIndex == 3,
+            onTap: () {
+              Navigator.pop(context);
+              setState(() => _currentIndex = 3);
+            },
+          ),
           const Divider(),
           ListTile(
             leading: const Icon(Icons.logout),
@@ -111,9 +115,7 @@ class _MenuEstudianteState extends State<MenuEstudiante> {
   @override
   Widget build(BuildContext context) {
     if (_idUsuario == null) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     // Los providers ya existen globalmente, solo usamos el Scaffold
@@ -129,6 +131,7 @@ class _MenuEstudianteState extends State<MenuEstudiante> {
           const RegistrarProyectoScreen(),
           CalendarioScreen(idUsuario: _idUsuario!),
           MiProyectoScreen(idUsuario: _idUsuario!),
+          EntregasEstudianteScreen(idUsuario: _idUsuario!),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -147,6 +150,10 @@ class _MenuEstudianteState extends State<MenuEstudiante> {
           BottomNavigationBarItem(
             icon: Icon(Icons.assignment),
             label: 'Mi Proyecto',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.upload_file),
+            label: 'Entregas',
           ),
         ],
       ),

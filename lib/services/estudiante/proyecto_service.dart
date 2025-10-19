@@ -9,26 +9,11 @@ class ProyectoService {
   Future<Map<String, dynamic>> obtenerProyecto(int idUsuario) async {
     try {
       final url = Uri.parse('$baseUrl/proyectos/obtener/$idUsuario');
-      debugPrint('🔍 URL de petición: $url');
-      debugPrint('👤 idUsuario en servicio: $idUsuario');
-      
+
       final response = await http.get(url);
-      
-      debugPrint('📡 Status Code: ${response.statusCode}');
-      debugPrint('📦 Response Body: ${response.body}');
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body) as Map<String, dynamic>;
-        
-        // Debug detallado de cada campo
-        debugPrint('✅ Datos recibidos exitosamente:');
-        debugPrint('  - title: ${data['title']}');
-        debugPrint('  - descripcion: ${data['descripcion']}');
-        debugPrint('  - estado: ${data['estado']}');
-        debugPrint('  - createdAt: ${data['createdAt']} (${data['createdAt'].runtimeType})');
-        debugPrint('  - idEstudiante: ${data['idEstudiante']}');
-        debugPrint('  - idDocente: ${data['idDocente']}');
-        debugPrint('  - rutaDocumento: ${data['rutaDocumento']}');
         
         return data;
       } else {

@@ -64,6 +64,16 @@ class _HomeEstudianteState extends State<HomeEstudiante> {
                 );
               },
             ),
+            ListTile(
+              leading: const Icon(Icons.upload_file),
+              title: const Text('Entregas'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const MenuEstudiante(tabIndex: 3)),
+                );
+              },
+            ),
             const Divider(),
             ListTile(
               leading: const Icon(Icons.logout),

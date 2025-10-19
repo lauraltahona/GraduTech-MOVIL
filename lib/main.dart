@@ -6,6 +6,9 @@ import 'package:proyecto_movil/controllers/estudiante/mi_proyecto_controller.dar
 import 'package:proyecto_movil/screens/estudiante/home_estudiante.dart';
 import 'package:proyecto_movil/screens/docente/homeDocente.dart';
 import 'package:proyecto_movil/screens/estudiante/menu_estudiante.dart';
+import 'package:proyecto_movil/controllers/estudiante/entregasAsignadas_controller.dart';
+import 'package:proyecto_movil/controllers/estudiante/subir_entrega_controller.dart';
+import 'package:proyecto_movil/screens/estudiante/subir_entrega_screen.dart';
 import 'package:proyecto_movil/screens/login_screen.dart';
 // Importa tus otras pantallas aquí
 
@@ -25,7 +28,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => CalendarioController()),
         ChangeNotifierProvider(create: (_) => MiProyectoController()),
-        // Agrega más controllers aquí según necesites
+        ChangeNotifierProvider(create: (_) => EntregasController()),
+        ChangeNotifierProvider(create: (_) => SubirEntregaController()),
       ],
       child: MaterialApp(
         title: 'GraduTech',
@@ -36,6 +40,13 @@ class MyApp extends StatelessWidget {
           '/homeEstudiante': (context) => const HomeEstudiante(),
           '/menuEstudiante': (context) => const MenuEstudiante(),
           '/homeDocente': (context) => const HomeDocente(),
+          '/subir-entrega': (context) {
+            final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+            return SubirEntregaScreen(
+              idPlanEntrega: args['idPlanEntrega'],
+              fechaLimite: args['fechaLimite'],
+            );
+          },
           // '/homeJurado': (context) => const HomeJurado(),
         },
       ),
