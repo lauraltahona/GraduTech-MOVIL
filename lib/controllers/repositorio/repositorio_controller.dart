@@ -1,21 +1,32 @@
-import 'package:proyecto_movil/services/repositorio/repositorio_service.dart';
 import 'package:flutter/material.dart';
+import '../../models/proyecto_model.dart';
+import 'package:proyecto_movil/services/estudiante/proyecto_service.dart';
+import 'package:proyecto_movil/screens/repositorio/detalle_repositorio.dart';
 
-class RepositorioController with ChangeNotifier {
-  final RepositorioService _service = RepositorioService();
+class RepositorioController extends ChangeNotifier {
+  final ProyectoService _service = ProyectoService();
+  List<Proyecto> proyectos = [];
+  bool cargando = false;
 
-  Future<void> irADetalleProyecto(BuildContext context, String tipo) async {
+  Future<void> cargarProyectos(String tipo) async {
+    cargando = true;
+    notifyListeners();
     try {
-      await _service.obtenerProyectosPorTipo(tipo);
-      Navigator.pushNamed(
-        context,
-        '/mostrarProyectosRepositorio',
-        arguments: {'tipo': tipo},
-      );
+      proyectos = await _service.obtenerProyectos(tipo);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error al cargar proyectos: $e')),
-      );
+      debugPrint("Error cargando proyectos: $e");
+    } finally {
+      cargando = false;
+      notifyListeners();
     }
+  }
+
+  void irADetalleProyecto(BuildContext context, String tipo) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DetalleRepositorioScreen(tipo: tipo),
+      ),
+    );
   }
 }
