@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:proyecto_movil/widget/entrega_card.dart';
-import '../../controllers/entregas_controller.dart';
+import 'package:proyecto_movil/controllers/docente/entregas_controller.dart';
+import 'package:proyecto_movil/widgets/docente/entrega_card.dart';
 
 class EntregasPorPlanScreen extends StatefulWidget {
   final int idPlanEntrega;
@@ -17,9 +17,16 @@ class _EntregasPorPlanScreenState extends State<EntregasPorPlanScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
+    // Cargar las entregas después de que se construya el widget
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<EntregasController>().cargarEntregas(widget.idPlanEntrega);
     });
+  }
+
+  @override
+  void dispose() {
+    comentarioController.dispose();
+    super.dispose();
   }
 
   @override
@@ -35,21 +42,21 @@ class _EntregasPorPlanScreenState extends State<EntregasPorPlanScreen> {
           ? const Center(child: CircularProgressIndicator())
           : controller.error != null
               ? Center(child: Text(controller.error!))
-              : ListView.builder(
-                  itemCount: controller.entregas.length,
-                  itemBuilder: (context, index) {
-                    final entrega = controller.entregas[index];
-                    return EntregaCard(
-                      entrega: entrega,
-                      onRetroalimentar: () {
-                        showDialog(
-                          context: context,
-                          builder: (_) => AlertDialog(
-                            title: const Text("Agregar retroalimentación"),
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                TextField(
+              : controller.entregas.isEmpty
+                  ? const Center(child: Text("No hay entregas registradas."))
+                  : ListView.builder(
+                      itemCount: controller.entregas.length,
+                      itemBuilder: (context, index) {
+                        final entrega = controller.entregas[index];
+                        return EntregaCard(
+                          entrega: entrega,
+                          onRetroalimentar: () {
+                            comentarioController.clear(); // limpiar antes de abrir
+                            showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                title: const Text("Agregar retroalimentación"),
+                                content: TextField(
                                   controller: comentarioController,
                                   decoration: const InputDecoration(
                                     labelText: "Comentario",
@@ -57,33 +64,37 @@ class _EntregasPorPlanScreenState extends State<EntregasPorPlanScreen> {
                                   ),
                                   maxLines: 3,
                                 ),
-                              ],
-                            ),
-                            actions: [
-                              TextButton(
-                                child: const Text("Cancelar"),
-                                onPressed: () => Navigator.pop(context),
+                                actions: [
+                                  TextButton(
+                                    child: const Text("Cancelar"),
+                                    onPressed: () => Navigator.pop(context),
+                                  ),
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.green),
+                                    child: const Text("Guardar"),
+                                    onPressed: () {
+                                      final comentario =
+                                          comentarioController.text.trim();
+                                      if (comentario.isEmpty) return;
+
+                                      controller.enviarRetroalimentacion(
+                                        entrega['idEntrega'],
+                                        comentario,
+                                        null,
+                                      );
+
+                                      comentarioController.clear();
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
                               ),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.green),
-                                child: const Text("Guardar"),
-                                onPressed: () {
-                                  controller.enviarRetroalimentacion(
-                                    entrega['idEntrega'],
-                                    comentarioController.text,
-                                    null,
-                                  );
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ],
-                          ),
+                            );
+                          },
                         );
                       },
-                    );
-                  },
-                ),
+                    ),
     );
   }
 }

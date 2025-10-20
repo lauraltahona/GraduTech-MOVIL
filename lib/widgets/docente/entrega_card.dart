@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class EntregaCard extends StatelessWidget {
-  final Map entrega;
+  final Map<String, dynamic> entrega;
   final VoidCallback onRetroalimentar;
 
   const EntregaCard({
@@ -13,41 +13,25 @@ class EntregaCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: const Color(0xFFE8F5E9),
-      elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      elevation: 4,
+      shadowColor: Colors.green[300],
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: ListTile(
         title: Text(
-          '📅 ${DateTime.parse(entrega['fecha_envio']).toLocal().toString().split(' ')[0]}',
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          entrega['titulo'],
+          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('📝 ${entrega['descripcion']}'),
-            const SizedBox(height: 5),
-            GestureDetector(
-              onTap: () {
-                // abrir enlace
-              },
-              child: Text(
-                '📄 Ver documento',
-                style: TextStyle(
-                  color: Colors.green[800],
-                  decoration: TextDecoration.underline,
-                ),
-              ),
-            ),
-            if (entrega['retroalimentacion'] != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Text('💬 Retroalimentación: ${entrega['retroalimentacion']}'),
-              ),
+            Text('Fecha: ${entrega['fecha']}'),
+            Text('Estado: ${entrega['estado']}'),
+            Text('Comentario: ${entrega['comentario']}'),
           ],
         ),
         trailing: IconButton(
-          icon: const Icon(Icons.feedback, color: Colors.green),
+          icon: Icon(Icons.feedback, color: Colors.green[700]),
           onPressed: onRetroalimentar,
         ),
       ),
