@@ -10,7 +10,9 @@ import 'package:proyecto_movil/controllers/estudiante/entregasAsignadas_controll
 import 'package:proyecto_movil/controllers/estudiante/subir_entrega_controller.dart';
 import 'package:proyecto_movil/screens/estudiante/subir_entrega_screen.dart';
 import 'package:proyecto_movil/screens/login_screen.dart';
-// Importa tus otras pantallas aquí
+import 'package:proyecto_movil/screens/repositorio/home_repo.dart';
+import 'package:proyecto_movil/controllers/repositorio/repositorio_controller.dart';  
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +32,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => MiProyectoController()),
         ChangeNotifierProvider(create: (_) => EntregasController()),
         ChangeNotifierProvider(create: (_) => SubirEntregaController()),
+        ChangeNotifierProvider(create: (_) => RepositorioController())
       ],
       child: MaterialApp(
         title: 'GraduTech',
@@ -47,6 +50,7 @@ class MyApp extends StatelessWidget {
               fechaLimite: args['fechaLimite'],
             );
           },
+          '/homeRepo': (context) => const HomeRepoScreen(),
           // '/homeJurado': (context) => const HomeJurado(),
         },
       ),
