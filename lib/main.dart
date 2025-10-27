@@ -12,12 +12,14 @@ import 'package:proyecto_movil/controllers/estudiante/subir_entrega_controller.d
 import 'package:proyecto_movil/screens/estudiante/subir_entrega_screen.dart';
 import 'package:proyecto_movil/screens/login_screen.dart';
 import 'package:proyecto_movil/screens/repositorio/home_repo.dart';
-import 'package:proyecto_movil/controllers/repositorio/repositorio_controller.dart';  
+import 'package:proyecto_movil/controllers/repositorio/repositorio_controller.dart';
+import 'package:proyecto_movil/services/notificacion/notificacion_service.dart';  
 
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
+  await NotificationService().initialize();
   runApp(const MyApp());
 }
 
@@ -26,7 +28,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 🔥 IMPORTANTE: Los providers se crean UNA SOLA VEZ aquí
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => CalendarioController()),
