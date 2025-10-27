@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';  // 👈 importa dotenv
-import 'screens/login_screen.dart';
-import 'screens/estudiante/home_estudiante.dart';
-import 'screens/estudiante/menu_estudiante.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
+import 'package:proyecto_movil/controllers/estudiante/calendario_controller.dart';
+import 'package:proyecto_movil/controllers/estudiante/mi_proyecto_controller.dart';
+import 'package:proyecto_movil/screens/docente/proyectos_asignados_page.dart';
+import 'package:proyecto_movil/screens/estudiante/home_estudiante.dart';
+import 'package:proyecto_movil/screens/docente/homeDocente.dart';
+import 'package:proyecto_movil/screens/estudiante/menu_estudiante.dart';
+import 'package:proyecto_movil/controllers/estudiante/entregasAsignadas_controller.dart';
+import 'package:proyecto_movil/controllers/estudiante/subir_entrega_controller.dart';
+import 'package:proyecto_movil/screens/estudiante/subir_entrega_screen.dart';
+import 'package:proyecto_movil/screens/login_screen.dart';
+import 'package:proyecto_movil/screens/repositorio/home_repo.dart';
+import 'package:proyecto_movil/controllers/repositorio/repositorio_controller.dart';
+import 'package:proyecto_movil/services/notificacion/notificacion_service.dart';  
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // 👇 Carga el archivo .env antes de iniciar la app
   await dotenv.load(fileName: ".env");
-
-  // 👇 (opcional) Verifica que cargó bien
-  print('✅ IP desde .env: ${dotenv.env['IP']}');
-
+  await NotificationService().initialize();
   runApp(const MyApp());
 }
 
@@ -21,16 +28,35 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'GraduTech',
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/login',
-      routes: {
-        '/login': (context) => const LoginScreen(),
-        '/homeEstudiante': (context) => const HomeEstudiante(),
-        '/menuEstudiante': (context) => MenuEstudiante(),
-      },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CalendarioController()),
+        ChangeNotifierProvider(create: (_) => MiProyectoController()),
+        ChangeNotifierProvider(create: (_) => EntregasController()),
+        ChangeNotifierProvider(create: (_) => SubirEntregaController()),
+        ChangeNotifierProvider(create: (_) => RepositorioController())
+      ],
+      child: MaterialApp(
+        title: 'GraduTech',
+        debugShowCheckedModeBanner: false,
+        initialRoute: '/login',
+        routes: {
+          '/login': (context) => const LoginScreen(),
+          '/homeEstudiante': (context) => const HomeEstudiante(),
+          '/menuEstudiante': (context) => const MenuEstudiante(),
+          '/homeDocente': (context) => const HomeDocente(),
+          '/proyectosAsignados': (context) => const ProyectosAsignadosPage(),
+          '/subir-entrega': (context) {
+            final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+            return SubirEntregaScreen(
+              idPlanEntrega: args['idPlanEntrega'],
+              fechaLimite: args['fechaLimite'],
+            );
+          },
+          '/homeRepo': (context) => const HomeRepoScreen(),
+          // '/homeJurado': (context) => const HomeJurado(),
+        },
+      ),
     );
   }
 }
-

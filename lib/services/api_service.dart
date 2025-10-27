@@ -6,8 +6,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class ApiService {
   final String baseUrl = dotenv.env['IP'] ?? '';
   
-
-
   Future<Map<String, dynamic>> login(String correo, String password) async {
     final response = await http.post(
       Uri.parse('$baseUrl/usuario/login'),
