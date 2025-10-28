@@ -5,7 +5,6 @@
   import 'package:proyecto_movil/controllers/docente/proyectos_asignados_controller.dart';
   import 'package:proyecto_movil/widgets/docente/proyecto_asignado_card.dart';
   import 'package:proyecto_movil/widgets/docente/modal_programar_reunion.dart';
-  import 'package:proyecto_movil/screens/docente/plan_entrega.dart';
 
   class ProyectosAsignadosScreen extends StatefulWidget {
     const ProyectosAsignadosScreen({super.key});

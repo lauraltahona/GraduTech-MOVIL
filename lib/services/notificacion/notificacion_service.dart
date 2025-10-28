@@ -82,12 +82,12 @@ class NotificationService {
       );
     }
 
-    // Notificación recordatorio 1 día antes a las 6:00 PM
+    // Notificación recordatorio 1 día antes a las 5:00 PM
     final fechaRecordatorio = DateTime(
       fechaEntrega.year,
       fechaEntrega.month,
       fechaEntrega.day - 1,
-      18, // 6 PM
+      17, // 5 PM
       0,
     );
 
