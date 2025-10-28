@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class PlanearEntregaPage extends StatelessWidget {
-  const PlanearEntregaPage({super.key});
+class PlanearEntregaScreen extends StatelessWidget {
+  const PlanearEntregaScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

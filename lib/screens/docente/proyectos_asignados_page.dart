@@ -1,183 +1,197 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:proyecto_movil/screens/docente/entregas_pages.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:proyecto_movil/controllers/docente/proyectos_asignados_controller.dart';
+import 'package:proyecto_movil/widgets/docente/proyecto_asignado_card.dart';
+import 'package:proyecto_movil/widgets/docente/modal_programar_reunion.dart';
+import 'package:proyecto_movil/screens/docente/entregraPlan.dart';
 
-class ProyectosAsignadosPage extends StatefulWidget {
-  const ProyectosAsignadosPage({super.key});
+class ProyectosAsignadosScreen extends StatefulWidget {
+  const ProyectosAsignadosScreen({super.key});
 
   @override
-  State<ProyectosAsignadosPage> createState() => _ProyectosAsignadosPageState();
+  State<ProyectosAsignadosScreen> createState() => _ProyectosAsignadosScreenState();
 }
 
-class _ProyectosAsignadosPageState extends State<ProyectosAsignadosPage> {
-  List proyectos = [];
-  bool cargando = true;
-  String mensaje = "";
+class _ProyectosAsignadosScreenState extends State<ProyectosAsignadosScreen> {
+  int? _idUsuario;
 
   @override
   void initState() {
     super.initState();
-    cargarProyectos();
+    _cargarDatos();
   }
 
-  Future<void> cargarProyectos() async {
-    try {
-      final baseUrl = dotenv.env['API_URL'] ?? 'http://localhost:5001';
-      final idUsuario = "1"; // ⚠️ Cambiar por ID real del login
-      final url = Uri.parse('$baseUrl/proyectos/asignados/$idUsuario');
-
-      final res = await http.get(url);
-      if (res.statusCode == 200) {
-        setState(() {
-          proyectos = json.decode(res.body);
-          cargando = false;
-        });
-      } else {
-        setState(() {
-          mensaje = "Error al cargar proyectos (${res.statusCode})";
-          cargando = false;
-        });
-      }
-    } catch (e) {
+  Future<void> _cargarDatos() async {
+    final prefs = await SharedPreferences.getInstance();
+    final id = prefs.getInt('idUsuario');
+    
+    if (id != null) {
       setState(() {
-        mensaje = "Error de conexión con el servidor";
-        cargando = false;
+        _idUsuario = id;
       });
+      
+      if (mounted) {
+        await context.read<ProyectosAsignadosController>().cargarProyectos(id);
+      }
     }
   }
 
-  Future<void> cambiarEstado(int idProyecto, String nuevoEstado) async {
-    try {
-      final baseUrl = dotenv.env['API_URL'] ?? 'http://localhost:5001';
-      final url = Uri.parse('$baseUrl/proyectos/cambiar-estado');
-      final res = await http.patch(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({'idProyecto': idProyecto, 'estado': nuevoEstado}),
-      );
-      if (res.statusCode == 200) {
-        setState(() {
-          proyectos = proyectos.map((p) {
-            if (p['idProyecto'] == idProyecto) {
-              p['estado'] = nuevoEstado;
-            }
-            return p;
-          }).toList();
-        });
-      }
-    } catch (e) {
-      setState(() => mensaje = "Error al cambiar estado");
+  Future<void> _refrescar() async {
+    if (_idUsuario != null) {
+      await context.read<ProyectosAsignadosController>().cargarProyectos(_idUsuario!);
     }
+  }
+
+  void _mostrarModalReunion(String correoEstudiante) {
+    showDialog(
+      context: context,
+      builder: (context) => ModalProgramarReunion(
+        correoEstudiante: correoEstudiante,
+        onEnviar: (fecha, hora, lugar) async {
+          final controller = context.read<ProyectosAsignadosController>();
+          await controller.programarReunion(
+            correo: correoEstudiante,
+            fecha: fecha,
+            hora: hora,
+            lugar: lugar,
+          );
+
+          if (mounted && controller.mensaje != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(controller.mensaje!),
+                backgroundColor: controller.mensaje!.contains('✅') 
+                    ? Colors.green 
+                    : Colors.red,
+              ),
+            );
+            controller.limpiarMensaje();
+          }
+        },
+      ),
+    );
+  }
+
+  void _irAPlanEntrega(int idProyecto) {
+    // Navegar a la pantalla de entregas por plan
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EntregasPorPlanScreen(idPlanEntrega: idProyecto),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    if (cargando) {
+    if (_idUsuario == null) {
       return const Scaffold(
-        body: Center(child: CircularProgressIndicator(color: Colors.green)),
+        body: Center(
+          child: CircularProgressIndicator(color: Colors.green),
+        ),
       );
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Proyectos Asignados"),
-        backgroundColor: Colors.green[700], // Verde intenso
+        title: const Text('✅ Proyectos Asignados'),
+        backgroundColor: Colors.green[700],
+        foregroundColor: Colors.white,
       ),
-      body: proyectos.isEmpty
-          ? Center(
-              child: Text(
-                mensaje.isNotEmpty ? mensaje : "No hay proyectos asignados.",
-                style: const TextStyle(color: Colors.green),
-              ),
-            )
-          : ListView.builder(
-              itemCount: proyectos.length,
-              itemBuilder: (context, index) {
-                final proyecto = proyectos[index];
-                return Card(
-                  color: Colors.green[100], // Fondo verde suave
-                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+      body: Consumer<ProyectosAsignadosController>(
+        builder: (context, controller, child) {
+          if (controller.cargando) {
+            return const Center(
+              child: CircularProgressIndicator(color: Colors.green),
+            );
+          }
+
+          if (controller.error != null) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    size: 64,
+                    color: Colors.red[400],
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          proyecto['titulo'] ?? '',
-                          style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.green),
-                        ),
-                        Text(
-                          "👤 Estudiante: ${proyecto['estudiante']}",
-                          style: const TextStyle(color: Colors.green),
-                        ),
-                        Text(
-                          "📊 Estado: ${proyecto['estado']}",
-                          style: const TextStyle(color: Colors.green),
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green[600]),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => EntregasPage(
-                                        idPlanEntrega:
-                                            proyecto['idPlanEntrega']),
-                                  ),
-                                );
-                              },
-                              child: const Text("Ver entregas"),
-                            ),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green[400]),
-                              onPressed: () {
-                                // Aquí podrías abrir un modal para programar reunión
-                              },
-                              child: const Text("Programar reunión"),
-                            ),
-                            DropdownButton<String>(
-                              value: proyecto['estado'],
-                              dropdownColor: Colors.green[50],
-                              items: const [
-                                DropdownMenuItem(
-                                    value: "EN REVISIÓN",
-                                    child: Text("EN REVISIÓN")),
-                                DropdownMenuItem(
-                                    value: "APROBADO POR DOCENTE",
-                                    child: Text("APROBADO POR DOCENTE")),
-                                DropdownMenuItem(
-                                    value: "RECHAZADO", child: Text("RECHAZADO")),
-                              ],
-                              onChanged: (nuevoEstado) {
-                                if (nuevoEstado != null) {
-                                  cambiarEstado(
-                                      proyecto['idProyecto'], nuevoEstado);
-                                }
-                              },
-                            ),
-                          ],
-                        )
-                      ],
+                  const SizedBox(height: 16),
+                  Text(
+                    'Error al cargar proyectos',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[800],
                     ),
                   ),
+                  const SizedBox(height: 8),
+                  Text(
+                    controller.error!,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey[600]),
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton.icon(
+                    onPressed: _refrescar,
+                    icon: const Icon(Icons.refresh),
+                    label: const Text('Reintentar'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green[700],
+                      foregroundColor: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          if (controller.proyectos.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.assignment_outlined,
+                    size: 64,
+                    color: Colors.grey[400],
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'No hay proyectos asignados',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          return RefreshIndicator(
+            onRefresh: _refrescar,
+            color: Colors.green,
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              itemCount: controller.proyectos.length,
+              itemBuilder: (context, index) {
+                final proyecto = controller.proyectos[index];
+                
+                return ProyectoAsignadoCard(
+                  proyecto: proyecto,
+                  onCambiarEstado: (nuevoEstado) {
+                    controller.cambiarEstado(proyecto.idProyecto, nuevoEstado);
+                  },
+                  onPlanearEntrega: () => _irAPlanEntrega(proyecto.idProyecto),
+                  onProgramarReunion: () => _mostrarModalReunion(proyecto.correo),
                 );
               },
             ),
+          );
+        },
+      ),
     );
   }
 }
