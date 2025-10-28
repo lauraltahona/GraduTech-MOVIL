@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ProgramarReunionPage extends StatelessWidget {
-  const ProgramarReunionPage({super.key});
+class ProgramarReunionScreen extends StatelessWidget {
+  const ProgramarReunionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
