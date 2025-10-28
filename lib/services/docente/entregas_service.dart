@@ -1,51 +1,64 @@
 import 'dart:convert';
+import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
+import 'package:proyecto_movil/models/entrega_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-class EntregasService {
-  final String baseUrl = dotenv.env['API_URL'] ?? 'http://localhost:5001';
+class EntregaService {
+  final String baseUrl = dotenv.env['IP'] ?? 'http://localhost:5001';
 
-  Future<List<dynamic>> obtenerEntregasPorPlan(int idPlanEntrega) async {
-    final url = Uri.parse('$baseUrl/entrega/entrega-por-plan/$idPlanEntrega');
-    final response = await http.get(url);
-
+ Future<List<Entrega>> obtenerEntregasPorPlan(int idPlanEntrega) async {
+  try {
+    debugPrint('🔍 Iniciando solicitud para plan: $idPlanEntrega');
+    
+    final response = await http.get(
+      Uri.parse('$baseUrl/entrega/entrega-por-plan/$idPlanEntrega'),
+    );
+    
+    debugPrint('📦 Status Code: ${response.statusCode}');
+    debugPrint('📦 Respuesta recibida: ${response.body}');
+    
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      final List<dynamic> jsonResponse = json.decode(response.body);
+      debugPrint('📦 JSON decodificado: $jsonResponse');
+      
+      // Verifica que no sea null
+      if (jsonResponse == null) {
+        debugPrint('❌ JSON response es NULL');
+        return [];
+      }
+      
+      final entregas = jsonResponse.map((json) {
+        debugPrint('📦 Procesando entrega: $json');
+        return Entrega.fromJson(json);
+      }).toList();
+      
+      debugPrint('✅ Entregas procesadas: ${entregas.length}');
+      return entregas;
     } else {
-      throw Exception('Error al obtener entregas');
+      throw Exception('Error al cargar entregas: ${response.statusCode}');
     }
+  } catch (e) {
+    debugPrint('❌ Error en obtenerEntregasPorPlan: $e');
+    rethrow;
   }
+}
 
-  Future<String> subirArchivo(String filePath) async {
-    final url = Uri.parse('$baseUrl/upload');
-    var request = http.MultipartRequest('POST', url);
-    request.files.add(await http.MultipartFile.fromPath('file', filePath));
-
-    final res = await request.send();
-    if (res.statusCode == 200) {
-      final body = await res.stream.bytesToString();
-      final data = json.decode(body);
-      return data['fileUrl'];
-    } else {
-      throw Exception('Error al subir archivo');
-    }
-  }
-
-  Future<void> guardarRetroalimentacion(int idEntrega, String comentario, String? rutaArchivo) async {
-    final url = Uri.parse('$baseUrl/entrega/$idEntrega/retroalimentacion');
-    final body = {
-      "retroalimentacion": comentario,
-      "ruta_documento": rutaArchivo ?? ""
-    };
-
+  Future<void> enviarRetroalimentacion({
+    required int idEntrega,
+    required String retroalimentacion,
+  }) async {
     final response = await http.patch(
-      url,
+      Uri.parse('$baseUrl/entrega/$idEntrega/retroalimentacion'),
       headers: {'Content-Type': 'application/json'},
-      body: json.encode(body),
+      body: json.encode({
+        'retroalimentacion': retroalimentacion,
+        'ruta_documento': '',
+      }),
     );
 
     if (response.statusCode != 200) {
-      throw Exception('Error al guardar retroalimentación');
+      throw Exception('Error al enviar retroalimentación: ${response.statusCode}');
     }
   }
 }

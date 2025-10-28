@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_movil/screens/docente/proyectos_asignados_page.dart';
-import 'package:proyecto_movil/screens/docente/plan_entrega.dart';
-import 'package:proyecto_movil/screens/docente/programar_reunion_page.dart';
 
 class HomeDocente extends StatefulWidget {
   const HomeDocente({super.key});
@@ -15,8 +13,6 @@ class _HomeDocenteState extends State<HomeDocente> {
 
   final List<Widget> _pages = const [
     ProyectosAsignadosScreen(), 
-    PlanearEntregaScreen(),
-    ProgramarReunionScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -42,6 +38,7 @@ class _HomeDocenteState extends State<HomeDocente> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.upload_file),
+
             label: "Planear Entregas",
           ),
           BottomNavigationBarItem(
