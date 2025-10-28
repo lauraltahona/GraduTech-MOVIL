@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
+import 'package:proyecto_movil/controllers/docente/entregas_plan_controller.dart';
+import 'package:proyecto_movil/controllers/docente/plan_entrega_controller.dart';
 import 'package:proyecto_movil/controllers/docente/proyectos_asignados_controller.dart';
 import 'package:proyecto_movil/controllers/estudiante/calendario_controller.dart';
 import 'package:proyecto_movil/controllers/estudiante/mi_proyecto_controller.dart';
@@ -41,6 +43,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => RepositorioController()),
         ChangeNotifierProvider(create: (_) => RevisionJuradoController()),
         ChangeNotifierProvider(create: (_) => ProyectosAsignadosController()),
+        ChangeNotifierProvider(create: (_) => PlanEntregaController()),
+        ChangeNotifierProvider(create: (_) => EntregasPlanController()),
       ],
       child: MaterialApp(
         title: 'GraduTech',

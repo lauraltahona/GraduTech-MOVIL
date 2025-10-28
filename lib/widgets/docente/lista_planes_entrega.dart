@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_movil/models/plan_entrega_model.dart';
-import 'package:proyecto_movil/screens/docente/entregraPlan.dart';
+import 'package:proyecto_movil/screens/docente/entregas_por_plan.dart';
 import 'package:intl/intl.dart';
 
 class ListaPlanesEntrega extends StatelessWidget {
@@ -27,7 +27,7 @@ class ListaPlanesEntrega extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => EntregasPorPlanScreen(
+                  builder: (context) => EntregasPlanScreen(
                     idPlanEntrega: plan.idPlanEntrega!,
                   ),
                 ),
