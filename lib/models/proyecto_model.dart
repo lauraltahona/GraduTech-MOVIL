@@ -7,6 +7,8 @@ class Proyecto {
   final String? rutaDocumento;
   final String? carrera;
   final String? fecha;
+  final String? updatedAt;
+  final int? idJurado;
 
   Proyecto({
     required this.idProyecto,
@@ -17,6 +19,8 @@ class Proyecto {
     this.rutaDocumento,
     this.carrera,
     this.fecha,
+    this.updatedAt,
+    this.idJurado,
   });
 
   factory Proyecto.fromJson(Map<String, dynamic> json) {
@@ -29,6 +33,8 @@ class Proyecto {
       rutaDocumento: json['rutaDocumento'],
       carrera: json['student']?['carrera'],
       fecha: json['createdAt'],
+      updatedAt: json['updatedAt'],
+      idJurado: json['idJurado'],
     );
   }
 }

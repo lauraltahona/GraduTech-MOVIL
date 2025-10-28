@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_movil/screens/docente/plan_entrega.dart';
 import 'package:proyecto_movil/screens/docente/proyectos_asignados_page.dart';
+import 'package:proyecto_movil/screens/docente/plan_entrega.dart';
 import 'package:proyecto_movil/screens/docente/programar_reunion_page.dart';
 
 class HomeDocente extends StatefulWidget {
@@ -14,9 +14,9 @@ class _HomeDocenteState extends State<HomeDocente> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = const [
-    ProyectosAsignadosPage(),
-    PlanearEntregaPage(),
-    ProgramarReunionPage(),
+    ProyectosAsignadosScreen(), 
+    PlanearEntregaScreen(),
+    ProgramarReunionScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -32,7 +32,6 @@ class _HomeDocenteState extends State<HomeDocente> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        // Cambié el color azul por verde
         selectedItemColor: Colors.green[800],
         unselectedItemColor: Colors.green[300],
         backgroundColor: Colors.green[50],
@@ -54,4 +53,3 @@ class _HomeDocenteState extends State<HomeDocente> {
     );
   }
 }
-

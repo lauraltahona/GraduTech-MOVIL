@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:proyecto_movil/controllers/estudiante/calendario_controller.dart';
-import 'package:proyecto_movil/controllers/estudiante/mi_proyecto_controller.dart';
 import 'package:proyecto_movil/screens/estudiante/calendario.dart';
 import 'package:proyecto_movil/screens/estudiante/entregas_estudiante.dart';
 import 'registrar_proyecto.dart';
 import 'package:proyecto_movil/screens/estudiante/mi_proyecto.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:proyecto_movil/screens/estudiante/revision_jurados.dart';
 
 class MenuEstudiante extends StatefulWidget {
   final int tabIndex;
@@ -95,6 +93,15 @@ class _MenuEstudianteState extends State<MenuEstudiante> {
               setState(() => _currentIndex = 3);
             },
           ),
+          ListTile(
+            leading: const Icon(Icons.verified),
+            title: const Text('Entregas'),
+            selected: _currentIndex == 4,
+            onTap: () {
+              Navigator.pop(context);
+              setState(() => _currentIndex = 4);
+            },
+          ),
           const Divider(),
           ListTile(
             leading: const Icon(Icons.logout),
@@ -132,6 +139,7 @@ class _MenuEstudianteState extends State<MenuEstudiante> {
           CalendarioScreen(idUsuario: _idUsuario!),
           MiProyectoScreen(idUsuario: _idUsuario!),
           EntregasEstudianteScreen(idUsuario: _idUsuario!),
+          const RevisionJuradoScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -154,6 +162,10 @@ class _MenuEstudianteState extends State<MenuEstudiante> {
           BottomNavigationBarItem(
             icon: Icon(Icons.upload_file),
             label: 'Entregas',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.verified),
+            label: 'Revisión Jurado',
           ),
         ],
       ),
