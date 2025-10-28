@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'menu_estudiante.dart';
-import 'package:proyecto_movil/screens/repositorio/home_repo.dart';
 
 class HomeEstudiante extends StatefulWidget {
   const HomeEstudiante({super.key});
@@ -79,6 +78,18 @@ class _HomeEstudianteState extends State<HomeEstudiante> {
                   context,
                   MaterialPageRoute(
                     builder: (_) => const MenuEstudiante(tabIndex: 3),
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.upload_file),
+              title: const Text('Revisión Jurado'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const MenuEstudiante(tabIndex: 4),
                   ),
                 );
               },
