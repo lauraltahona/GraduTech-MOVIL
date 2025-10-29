@@ -50,8 +50,8 @@ class NotificationService {
       fechaEntrega.year,
       fechaEntrega.month,
       fechaEntrega.day,
-      17, // Hora: 5 PM
-      15, // Minutos
+      15, // Hora: 5 PM
+      59, // Minutos
     );
 
     // Solo programar si la fecha es futura
@@ -87,8 +87,8 @@ class NotificationService {
       fechaEntrega.year,
       fechaEntrega.month,
       fechaEntrega.day - 1,
-      17, // 5 PM
-      0,
+      15, // 5 PM
+      50,
     );
 
     if (fechaRecordatorio.isAfter(DateTime.now())) {
