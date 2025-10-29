@@ -7,7 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class ProyectoCard extends StatelessWidget {
   final Proyecto proyecto;
 
-  const ProyectoCard({Key? key, required this.proyecto}) : super(key: key);
+  const ProyectoCard({super.key, required this.proyecto});
 
   String _formatearFecha(String? fecha) {
     if (fecha == null) return 'Sin fecha';

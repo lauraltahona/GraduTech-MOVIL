@@ -4,7 +4,7 @@ import 'package:proyecto_movil/controllers/repositorio/repositorio_controller.da
 import '../../widgets/repositorio/category_card.dart';
 
 class HomeRepoScreen extends StatelessWidget {
-  const HomeRepoScreen({Key? key}) : super(key: key);
+  const HomeRepoScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

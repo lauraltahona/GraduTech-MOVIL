@@ -167,7 +167,7 @@ class FormularioSubirEntrega extends StatelessWidget {
                       subtitle: _buildEstadoArchivo(archivo),
                     ),
                   );
-                }).toList(),
+                }),
 
               const SizedBox(height: 24),
 

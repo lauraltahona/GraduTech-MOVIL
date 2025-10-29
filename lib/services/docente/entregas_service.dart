@@ -22,12 +22,6 @@ class EntregaService {
       final List<dynamic> jsonResponse = json.decode(response.body);
       debugPrint('📦 JSON decodificado: $jsonResponse');
       
-      // Verifica que no sea null
-      if (jsonResponse == null) {
-        debugPrint('❌ JSON response es NULL');
-        return [];
-      }
-      
       final entregas = jsonResponse.map((json) {
         debugPrint('📦 Procesando entrega: $json');
         return Entrega.fromJson(json);
