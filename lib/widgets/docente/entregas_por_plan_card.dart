@@ -1,6 +1,7 @@
 // widgets/docente/entrega_card.dart
 import 'package:flutter/material.dart';
 import 'package:proyecto_movil/models/entrega_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EntregaCard extends StatelessWidget {
   final Entrega entrega;
@@ -49,9 +50,7 @@ class EntregaCard extends StatelessWidget {
                       const SizedBox(height: 8),
                       Text(
                         '📝 ${entrega.descripcion}',
-                        style: TextStyle(
-                          color: Colors.grey[700],
-                        ),
+                        style: TextStyle(color: Colors.grey[700]),
                       ),
                       const SizedBox(height: 8),
                       Chip(
@@ -68,9 +67,12 @@ class EntregaCard extends StatelessWidget {
                   IconButton(
                     onPressed: () {
                       // Abrir documento
-                      _abrirDocumento(context, entrega.rutaDocumento);
+                      abrirDocumentoSimple(entrega.rutaDocumento);
                     },
-                    icon: const Icon(Icons.document_scanner, color: Colors.green),
+                    icon: const Icon(
+                      Icons.document_scanner,
+                      color: Colors.green,
+                    ),
                     tooltip: 'Ver documento',
                   ),
               ],
@@ -79,7 +81,8 @@ class EntregaCard extends StatelessWidget {
             const SizedBox(height: 12),
 
             // Retroalimentación existente
-            if (entrega.retroalimentacion != null && entrega.retroalimentacion!.isNotEmpty)
+            if (entrega.retroalimentacion != null &&
+                entrega.retroalimentacion!.isNotEmpty)
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(12),
@@ -112,9 +115,13 @@ class EntregaCard extends StatelessWidget {
               child: ElevatedButton.icon(
                 onPressed: onToggleRetro,
                 icon: Icon(isFormVisible ? Icons.close : Icons.comment),
-                label: Text(isFormVisible ? 'Cancelar' : '💬 Agregar retroalimentación'),
+                label: Text(
+                  isFormVisible ? 'Cancelar' : '💬 Agregar retroalimentación',
+                ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: isFormVisible ? Colors.grey : Colors.green[700],
+                  backgroundColor: isFormVisible
+                      ? Colors.grey
+                      : Colors.green[700],
                   foregroundColor: Colors.white,
                 ),
               ),
@@ -142,10 +149,7 @@ class EntregaCard extends StatelessWidget {
         children: [
           const Text(
             'Agregar Retroalimentación',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
           const SizedBox(height: 12),
           TextField(
@@ -173,11 +177,11 @@ class EntregaCard extends StatelessWidget {
                 Text(
                   estadoRetro,
                   style: TextStyle(
-                    color: estadoRetro.contains('✅') 
-                        ? Colors.green 
-                        : estadoRetro.contains('❌') 
-                            ? Colors.red 
-                            : Colors.orange,
+                    color: estadoRetro.contains('✅')
+                        ? Colors.green
+                        : estadoRetro.contains('❌')
+                        ? Colors.red
+                        : Colors.orange,
                   ),
                 ),
             ],
@@ -191,29 +195,15 @@ class EntregaCard extends StatelessWidget {
     return '${fecha.day}/${fecha.month}/${fecha.year}';
   }
 
-  void _abrirDocumento(BuildContext context, String rutaDocumento) {
-    final url = 'http://localhost:5001$rutaDocumento';
-    // Aquí puedes usar url_launcher para abrir el enlace
-    // o mostrar un diálogo con opciones
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Documento'),
-        content: Text('Abrir: $url'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cerrar'),
-          ),
-          TextButton(
-            onPressed: () {
-              // TODO: Implementar apertura de URL
-              Navigator.pop(context);
-            },
-            child: const Text('Abrir en navegador'),
-          ),
-        ],
-      ),
-    );
+  Future<void> abrirDocumentoSimple(String rutaDocumento) async {
+    try {
+      final url = Uri.parse(rutaDocumento);
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url, mode: LaunchMode.externalApplication, 
+  webViewConfiguration: const WebViewConfiguration(enableJavaScript: true),);
+      }
+    } catch (e) {
+      debugPrint('Error al abrir documento: $e');
+    }
   }
 }

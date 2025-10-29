@@ -9,24 +9,30 @@ import 'package:flutter/material.dart';
 class EntregaService {
   final String baseUrl = dotenv.env['IP'] ?? '';
 
-  Future<List<Map<String, dynamic>>> obtenerFechasEntregas(int idUsuario) async {
+  Future<List<Map<String, dynamic>>> obtenerFechasEntregas(
+    int idUsuario,
+  ) async {
     final url = Uri.parse("$baseUrl/entrega/fechas/$idUsuario");
 
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       return List<Map<String, dynamic>>.from(
-        data.map((e) => {
-          "fecha": DateTime.parse(e["fecha_limite"]),
-          "descripcion": e["titulo"],
-        }),
+        data.map(
+          (e) => {
+            "fecha": DateTime.parse(e["fecha_limite"]),
+            "descripcion": e["titulo"],
+          },
+        ),
       );
     } else {
       throw Exception("Error al obtener entregas");
     }
   }
 
-  Future<List<Map<String, dynamic>>> obtenerEntregasAsignadas(int idUsuario) async {
+  Future<List<Map<String, dynamic>>> obtenerEntregasAsignadas(
+    int idUsuario,
+  ) async {
     final url = Uri.parse("$baseUrl/entrega/asignadas/$idUsuario");
 
     final response = await http.get(url);
@@ -38,7 +44,9 @@ class EntregaService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> obtenerEntregasPorPlan(int idPlanEntrega) async {
+  Future<List<Map<String, dynamic>>> obtenerEntregasPorPlan(
+    int idPlanEntrega,
+  ) async {
     final url = Uri.parse("$baseUrl/entrega/entrega-por-plan/$idPlanEntrega");
 
     final response = await http.get(url);
@@ -54,16 +62,17 @@ class EntregaService {
   Future<String> subirArchivo(File archivo) async {
     try {
       final url = Uri.parse("$baseUrl/cloudinary/upload");
-      
+
       debugPrint('🔄 Iniciando subida de archivo: ${archivo.path}');
-      
+
       // Detectar el MIME type
-      final mimeType = lookupMimeType(archivo.path) ?? 'application/octet-stream';
+      final mimeType =
+          lookupMimeType(archivo.path) ?? 'application/octet-stream';
       final mimeTypeData = mimeType.split('/');
 
       // Crear request multipart
       var request = http.MultipartRequest('POST', url);
-      
+
       // Agregar el archivo
       request.files.add(
         await http.MultipartFile.fromPath(
@@ -74,7 +83,7 @@ class EntregaService {
       );
 
       debugPrint('📤 Enviando archivo al servidor...');
-      
+
       // Enviar request
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
@@ -84,14 +93,14 @@ class EntregaService {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        
+
         // ✅ Cloudinary devuelve la URL completa
         final fileUrl = data['fileUrl'];
-        
+
         if (fileUrl == null || fileUrl.isEmpty) {
           throw Exception('El servidor no devolvió una URL válida');
         }
-        
+
         debugPrint('✅ Archivo subido correctamente: $fileUrl');
         return fileUrl;
       } else {
@@ -120,17 +129,19 @@ class EntregaService {
       debugPrint('  - idUsuario: $idUsuario');
       debugPrint('  - rutaDocumento: $rutaDocumento');
 
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({
-          'id_plan_entrega': idPlanEntrega,
-          'id_usuario': idUsuario,
-          'descripcion': descripcion,
-          'ruta_documento': rutaDocumento, // URL de Cloudinary
-          'correo_docente': correoDocente,
-        }),
-      );
+      final response = await http
+          .post(
+            url,
+            headers: {'Content-Type': 'application/json'},
+            body: json.encode({
+              'id_plan_entrega': idPlanEntrega,
+              'id_usuario': idUsuario,
+              'descripcion': descripcion,
+              'ruta_documento': rutaDocumento,
+              'correo_docente': correoDocente,
+            }),
+          )
+          .timeout(const Duration(seconds: 10)); // ⏱️ evita bloqueos largos
 
       debugPrint('📦 Respuesta BD: ${response.statusCode}');
 
