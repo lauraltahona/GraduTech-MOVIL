@@ -47,6 +47,8 @@ dependencies:
   url_launcher: ^6.3.2
   intl: ^0.20.2
   mime: ^2.0.0
+  flutter_launcher_icons: ^0.14.4
+
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +65,12 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/iconapp/LOGO GRADUTECH.jpg"
+  min_sdk_android: 21
+
 flutter:
 
   # The following line ensures that the Material Icons font is
@@ -75,6 +83,7 @@ flutter:
     - assets/login/
     - .env
     - assets/homedocente/FOTO-FACHADA-SABANAS112.jpg
+    - assets/iconapp/LOGO GRADUTECH.jpg
     
 
 
