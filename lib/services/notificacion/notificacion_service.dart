@@ -54,7 +54,6 @@ class NotificationService {
       30, // Minutos
     );
 
-
     // Solo programar si la fecha es futura
     if (fechaNotificacion.isAfter(DateTime.now())) {
       await _notifications.zonedSchedule(
@@ -88,8 +87,8 @@ class NotificationService {
       fechaEntrega.year,
       fechaEntrega.month,
       fechaEntrega.day - 1,
-      14, // 5 PM
-      0,
+      13, // 5 PM
+      30,
     );
 
     if (fechaRecordatorio.isAfter(DateTime.now())) {

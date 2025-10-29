@@ -29,6 +29,7 @@ class ProyectosAsignadosControllerJurado extends ChangeNotifier {
       debugPrint('Error al cargar proyectos: $e');
     } finally {
       cargando = false;
+      
       notifyListeners();
     }
   }
