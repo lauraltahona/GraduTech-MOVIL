@@ -28,7 +28,7 @@ class ApiService {
     required File archivo,
   }) async {
     try {
-      var uri = Uri.parse('$baseUrl/proyectos/registrar'); // ajusta la ruta a tu backend CAMBIAAAAAAAR
+      var uri = Uri.parse('$baseUrl/proyectos'); // ajusta la ruta a tu backend CAMBIAAAAAAAR
       var request = http.MultipartRequest('POST', uri);
 
       // Campos normales
