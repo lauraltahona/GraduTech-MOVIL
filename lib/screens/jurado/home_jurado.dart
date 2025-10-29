@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_movil/screens/login_screen.dart';
-import 'proyectos_asignados_page.dart';
+import 'package:proyecto_movil/screens/jurado/proyectos_asignados_jurado.dart';
 
-class HomeDocente extends StatefulWidget {
-  const HomeDocente({super.key});
+class HomeJurado extends StatefulWidget {
+  const HomeJurado({super.key});
 
   @override
-  State<HomeDocente> createState() => _HomeDocentePageState();
+  State<HomeJurado> createState() => _HomeJuradoPageState();
 }
 
-class _HomeDocentePageState extends State<HomeDocente> {
+class _HomeJuradoPageState extends State<HomeJurado> {
   int _selectedIndex = 0;
 
   void cambiarPagina(int index) {
@@ -154,7 +154,7 @@ class BienvenidaDocentePage extends StatelessWidget {
                 Icon(Icons.school, size: 100, color: Colors.white),
                 const SizedBox(height: 20),
                 const Text(
-                  '¡Bienvenido, Docente!',
+                  '¡Bienvenido, Jurado!',
                   style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.bold,
@@ -173,7 +173,7 @@ class BienvenidaDocentePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
                 const Text(
-                  '👉 Para poder ver tus proyectos asignados, planear entregas o programar reuniones, '
+                  '👉 Para poder ver tus proyectos asignados, programar sustentaciones o aprobar proyectos, '
                   'puedes presionar el botón de abajo o ir al ítem "Proyectos" en la parte inferior.',
                   style: TextStyle(
                     fontSize: 16,

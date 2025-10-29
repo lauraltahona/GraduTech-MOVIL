@@ -94,7 +94,7 @@
 
       return Scaffold(
         appBar: AppBar(
-          title: const Text('✅ Proyectos Asignados'),
+          title: const Text('Proyectos Asignados'),
           backgroundColor: Colors.green[700],
           foregroundColor: Colors.white,
         ),

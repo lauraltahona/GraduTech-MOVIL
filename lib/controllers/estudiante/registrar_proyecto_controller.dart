@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../services/api_service.dart';
 
 class RegistrarProyectoController {
@@ -12,19 +13,22 @@ class RegistrarProyectoController {
   final ApiService api = ApiService();
 
   Future<void> seleccionarArchivo(BuildContext context) async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf', 'doc', 'docx'],
-    );
-
-    if (result != null) {
-      archivoSeleccionado = File(result.files.single.path!);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Archivo seleccionado: ${result.files.single.name}')),
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf', 'doc', 'docx'],
       );
-    } else {
+
+      if (result != null) {
+        archivoSeleccionado = File(result.files.single.path!);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Archivo seleccionado correctamente ✅')),
+        );
+      }
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('No se seleccionó ningún archivo')),
+        SnackBar(content: Text('Error al seleccionar el archivo: $e')),
       );
     }
   }
@@ -67,5 +71,18 @@ class RegistrarProyectoController {
     descripcionController.clear();
     tipoProyecto = '';
     archivoSeleccionado = null;
+  }
+
+  Future<void> abrirDocumentoEnNavegador(String rutaDocumento) async {
+    try {
+      final Uri url = Uri.parse(rutaDocumento);
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url, mode: LaunchMode.externalApplication);
+      } else {
+        throw Exception('No se pudo abrir el documento');
+      }
+    } catch (e) {
+      debugPrint('Error al abrir documento: $e');
+    }
   }
 }

@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:proyecto_movil/controllers/estudiante/subir_entrega_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class FormularioSubirEntrega extends StatelessWidget {
@@ -168,7 +167,7 @@ class FormularioSubirEntrega extends StatelessWidget {
                       subtitle: _buildEstadoArchivo(archivo),
                     ),
                   );
-                }).toList(),
+                }),
 
               const SizedBox(height: 24),
 
@@ -222,12 +221,14 @@ class FormularioSubirEntrega extends StatelessWidget {
           ],
         );
       case 'subido':
-        final baseUrl = dotenv.env['IP'] ?? '';
+        final cloudinaryUrl = archivo['fileUrlServer'];
         return GestureDetector(
           onTap: () async {
-            final url = Uri.parse('$baseUrl${archivo['fileUrlServer']}');
+            final url = Uri.parse(cloudinaryUrl);
             if (await canLaunchUrl(url)) {
               await launchUrl(url, mode: LaunchMode.externalApplication);
+            } else {
+              debugPrint('❌ No se puede abrir: $cloudinaryUrl');
             }
           },
           child: const Text(

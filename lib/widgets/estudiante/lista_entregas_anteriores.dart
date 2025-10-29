@@ -12,8 +12,9 @@ class ListaEntregasAnteriores extends StatelessWidget {
   });
 
   Future<void> _abrirDocumento(String ruta) async {
-    final baseUrl = dotenv.env['IP'] ?? '';
-    final url = Uri.parse('$baseUrl$ruta');
+    final url = ruta.startsWith('http') 
+          ? Uri.parse(ruta)
+          : Uri.parse('${dotenv.env['IP']}$ruta'); 
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
     }
@@ -114,7 +115,7 @@ class ListaEntregasAnteriores extends StatelessWidget {
                 ),
               ),
             );
-          }).toList(),
+          }),
         ],
       ),
     );

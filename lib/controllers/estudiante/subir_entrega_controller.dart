@@ -102,9 +102,10 @@ class SubirEntregaController extends ChangeNotifier {
 
       limpiar();
       return true;
-    } catch (e) {
+    } catch (e, stack) {
       errorMessage = 'Error al subir entrega: $e';
       debugPrint("Error al guardar entrega: $e");
+      debugPrint("StackTrace: $stack");
       return false;
     } finally {
       isLoading = false;

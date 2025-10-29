@@ -5,7 +5,8 @@ class RegistrarProyectoScreen extends StatefulWidget {
   const RegistrarProyectoScreen({super.key});
 
   @override
-  State<RegistrarProyectoScreen> createState() => _RegistrarProyectoScreenState();
+  State<RegistrarProyectoScreen> createState() =>
+      _RegistrarProyectoScreenState();
 }
 
 class _RegistrarProyectoScreenState extends State<RegistrarProyectoScreen> {
@@ -24,7 +25,9 @@ class _RegistrarProyectoScreenState extends State<RegistrarProyectoScreen> {
               children: [
                 const SizedBox(height: 50), // Espacio para el botón de regreso
                 Card(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
                   elevation: 4,
                   child: Padding(
                     padding: const EdgeInsets.all(16),
@@ -33,10 +36,16 @@ class _RegistrarProyectoScreenState extends State<RegistrarProyectoScreen> {
                       children: [
                         const Text(
                           'Registrar Proyecto',
-                          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.green),
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green,
+                          ),
                         ),
                         const SizedBox(height: 8),
-                        const Text('Completa la información de tu proyecto académico'),
+                        const Text(
+                          'Completa la información de tu proyecto académico',
+                        ),
                         const SizedBox(height: 20),
 
                         // Título
@@ -55,13 +64,25 @@ class _RegistrarProyectoScreenState extends State<RegistrarProyectoScreen> {
                             labelText: 'Tipo de proyecto',
                             border: OutlineInputBorder(),
                           ),
-                          initialValue: controller.tipoProyecto.isEmpty ? null : controller.tipoProyecto,
+                          initialValue: controller.tipoProyecto.isEmpty
+                              ? null
+                              : controller.tipoProyecto,
                           items: const [
-                            DropdownMenuItem(value: 'Pasantía', child: Text('Pasantía')),
-                            DropdownMenuItem(value: 'Proyecto de grado', child: Text('Proyecto de grado')),
-                            DropdownMenuItem(value: 'Tesis', child: Text('Tesis')),
+                            DropdownMenuItem(
+                              value: 'Pasantía',
+                              child: Text('Pasantía'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'Proyecto de grado',
+                              child: Text('Proyecto de grado'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'Tesis',
+                              child: Text('Tesis'),
+                            ),
                           ],
-                          onChanged: (value) => setState(() => controller.tipoProyecto = value!),
+                          onChanged: (value) =>
+                              setState(() => controller.tipoProyecto = value!),
                         ),
                         const SizedBox(height: 16),
 
@@ -87,16 +108,61 @@ class _RegistrarProyectoScreenState extends State<RegistrarProyectoScreen> {
                         ),
                         const SizedBox(height: 20),
 
-                        // Subir archivo
+                        /// Subir archivo
                         ElevatedButton.icon(
-                          onPressed: () => controller.seleccionarArchivo(context),
+                          onPressed: () async {
+                            await controller.seleccionarArchivo(context);
+                            setState(
+                              () {},
+                            ); // 🔄 actualiza la vista con el nombre del archivo
+                          },
                           icon: const Icon(Icons.upload_file),
-                          label: const Text('Subir archivo'),
+                          label: const Text('Seleccionar archivo'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green,
                             minimumSize: const Size(double.infinity, 50),
                           ),
                         ),
+                        const SizedBox(height: 10),
+
+                        // 👇 Mostrar el archivo seleccionado
+                        if (controller.archivoSeleccionado != null)
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.green.shade100,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    controller.archivoSeleccionado!.path
+                                        .split('/')
+                                        .last,
+                                    style: const TextStyle(
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.visibility,
+                                    color: Colors.green,
+                                  ),
+                                  onPressed: () {
+                                    // Si quisieras abrirlo en el navegador
+                                    controller.abrirDocumentoEnNavegador(
+                                      controller.archivoSeleccionado!.path,
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
                         const SizedBox(height: 20),
 
                         // Guardar
@@ -112,7 +178,8 @@ class _RegistrarProyectoScreenState extends State<RegistrarProyectoScreen> {
                               child: const Text('Cancelar'),
                             ),
                             ElevatedButton(
-                              onPressed: () => controller.subirProyecto(context),
+                              onPressed: () =>
+                                  controller.subirProyecto(context),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.green,
                               ),
@@ -145,11 +212,7 @@ class _RegistrarProyectoScreenState extends State<RegistrarProyectoScreen> {
                   ],
                 ),
                 child: IconButton(
-                  icon: const Icon(
-                    Icons.home,
-                    color: Colors.white,
-                    size: 24,
-                  ),
+                  icon: const Icon(Icons.home, color: Colors.white, size: 24),
                   onPressed: () {
                     // Navegar al home principal del estudiante
                     Navigator.pushNamedAndRemoveUntil(
