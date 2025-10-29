@@ -83,7 +83,7 @@ class _HomeEstudianteState extends State<HomeEstudiante> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.upload_file),
+              leading: const Icon(Icons.verified),
               title: const Text('Revisión Jurado'),
               onTap: () {
                 Navigator.push(

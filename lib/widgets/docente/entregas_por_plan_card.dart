@@ -55,7 +55,7 @@ class EntregaCard extends StatelessWidget {
                       const SizedBox(height: 8),
                       Chip(
                         label: Text(
-                          'Estudiante ${entrega.idEstudiante}',
+                          'Estudiante Aldemar Quintero',
                           style: const TextStyle(color: Colors.white),
                         ),
                         backgroundColor: Colors.blue[700],
@@ -199,7 +199,7 @@ class EntregaCard extends StatelessWidget {
     try {
       final url = Uri.parse(rutaDocumento);
       if (await canLaunchUrl(url)) {
-        await launchUrl(url, mode: LaunchMode.externalApplication, 
+        await launchUrl(url, mode: LaunchMode.externalApplication, // 👈 navegador del sistema
   webViewConfiguration: const WebViewConfiguration(enableJavaScript: true),);
       }
     } catch (e) {
