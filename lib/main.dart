@@ -7,9 +7,9 @@ import 'package:proyecto_movil/controllers/docente/proyectos_asignados_controlle
 import 'package:proyecto_movil/controllers/estudiante/calendario_controller.dart';
 import 'package:proyecto_movil/controllers/estudiante/mi_proyecto_controller.dart';
 import 'package:proyecto_movil/controllers/estudiante/revision_jurado_controller.dart';
+import 'package:proyecto_movil/screens/docente/homeDocente.dart';
 import 'package:proyecto_movil/screens/docente/proyectos_asignados_page.dart';
 import 'package:proyecto_movil/screens/estudiante/home_estudiante.dart';
-import 'package:proyecto_movil/screens/docente/homeDocente.dart';
 import 'package:proyecto_movil/screens/estudiante/menu_estudiante.dart';
 import 'package:proyecto_movil/controllers/estudiante/entregasAsignadas_controller.dart';
 import 'package:proyecto_movil/controllers/estudiante/subir_entrega_controller.dart';

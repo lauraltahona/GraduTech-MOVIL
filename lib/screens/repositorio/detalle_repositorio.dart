@@ -5,7 +5,7 @@ import '../../widgets/repositorio/proyecto_card.dart';
 
 class DetalleRepositorioScreen extends StatefulWidget {
   final String tipo;
-  const DetalleRepositorioScreen({Key? key, required this.tipo}) : super(key: key);
+  const DetalleRepositorioScreen({super.key, required this.tipo});
 
   @override
   State<DetalleRepositorioScreen> createState() => _DetalleRepositorioScreenState();
