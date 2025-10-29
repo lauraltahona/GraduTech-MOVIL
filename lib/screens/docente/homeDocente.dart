@@ -167,7 +167,7 @@ class BienvenidaDocentePage extends StatelessWidget {
                   'Aquí podrás gestionar tus proyectos académicos de forma rápida y sencilla.',
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.white70,
+                    color: Color.fromARGB(217, 255, 255, 255),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -177,7 +177,7 @@ class BienvenidaDocentePage extends StatelessWidget {
                   'puedes presionar el botón de abajo o ir al ítem "Proyectos" en la parte inferior.',
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.white70,
+                    color: Color.fromARGB(182, 255, 255, 255),
                     fontStyle: FontStyle.italic,
                   ),
                   textAlign: TextAlign.center,
