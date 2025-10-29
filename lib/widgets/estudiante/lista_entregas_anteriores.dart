@@ -114,7 +114,7 @@ class ListaEntregasAnteriores extends StatelessWidget {
                 ),
               ),
             );
-          }).toList(),
+          }),
         ],
       ),
     );
