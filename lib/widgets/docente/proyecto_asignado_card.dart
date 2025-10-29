@@ -15,10 +15,23 @@ class ProyectoAsignadoCard extends StatelessWidget {
     required this.onProgramarReunion,
   });
 
+  Color _getEstadoColor() {
+    switch (proyecto.estado) {
+      case "APROBADO POR DOCENTE":
+        return Colors.green;
+      case "EN REVISIÓN":
+        return Colors.blue;
+      case "RECHAZADO":
+        return Colors.red;
+      default:
+        return Colors.blue;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.green[100],
+      color: Colors.green[50], // Lighter background
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       elevation: 3,
       shape: RoundedRectangleBorder(
@@ -29,56 +42,70 @@ class ProyectoAsignadoCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Título del proyecto
-            Text(
-              proyecto.titulo,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.green,
-              ),
-            ),
-            const SizedBox(height: 8),
-
-            // Información del estudiante
             Row(
               children: [
-                const Icon(Icons.person, size: 18, color: Colors.green),
-                const SizedBox(width: 4),
                 Expanded(
                   child: Text(
-                    "Estudiante: ${proyecto.estudiante}",
-                    style: const TextStyle(color: Colors.green),
+                    proyecto.titulo,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green,
+                    ),
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 4),
-
-            // Estado
-            Row(
-              children: [
-                const Icon(Icons.info_outline, size: 18, color: Colors.green),
-                const SizedBox(width: 4),
-                Text(
-                  "Estado: ${proyecto.estado}",
-                  style: const TextStyle(
-                    color: Colors.green,
-                    fontWeight: FontWeight.w600,
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: _getEstadoColor().withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: _getEstadoColor(), width: 1.5),
+                  ),
+                  child: Text(
+                    proyecto.estado,
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: _getEstadoColor(),
+                    ),
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 12),
 
-            // Botones de acción
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.blue[50],
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.blue.shade200),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.person, size: 20, color: Colors.blue[700]),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      proyecto.estudiante,
+                      style: TextStyle(
+                        color: Colors.blue[900],
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+
             Wrap(
               spacing: 8,
               runSpacing: 8,
               children: [
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green[600],
+                    backgroundColor: Colors.green,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -90,7 +117,7 @@ class ProyectoAsignadoCard extends StatelessWidget {
                 ),
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green[400],
+                    backgroundColor: Colors.amberAccent,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -104,44 +131,59 @@ class ProyectoAsignadoCard extends StatelessWidget {
             ),
             const SizedBox(height: 12),
 
-            // Dropdown para cambiar estado
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               decoration: BoxDecoration(
-                color: Colors.white,
+                gradient: LinearGradient(
+                  colors: [Colors.green[100]!, Colors.green[50]!],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.green.shade300),
+                border: Border.all(color: Colors.green.shade400, width: 1.5),
               ),
-              child: DropdownButton<String>(
-                value: proyecto.estado,
-                isExpanded: true,
-                underline: const SizedBox(),
-                dropdownColor: Colors.green[50],
-                icon: const Icon(Icons.arrow_drop_down, color: Colors.green),
-                style: const TextStyle(color: Colors.green, fontSize: 14),
-                items: const [
-                  DropdownMenuItem(
-                    value: "PENDIENTE",
-                    child: Text("PENDIENTE"),
-                  ),
-                  DropdownMenuItem(
-                    value: "EN REVISIÓN",
-                    child: Text("EN REVISIÓN"),
-                  ),
-                  DropdownMenuItem(
-                    value: "APROBADO POR DOCENTE",
-                    child: Text("APROBADO POR DOCENTE"),
-                  ),
-                  DropdownMenuItem(
-                    value: "RECHAZADO",
-                    child: Text("RECHAZADO"),
+              child: Row(
+                children: [
+                  Icon(Icons.sync_alt, size: 18, color: Colors.green[700]),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: DropdownButton<String>(
+                      value: proyecto.estado,
+                      isExpanded: true,
+                      underline: const SizedBox(),
+                      dropdownColor: Colors.green[50],
+                      icon: Icon(Icons.arrow_drop_down, color: Colors.green[700]),
+                      style: TextStyle(
+                        color: Colors.green[900],
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      items: const [
+                        DropdownMenuItem(
+                          value: "PENDIENTE",
+                          child: Text("PENDIENTE"),
+                        ),
+                        DropdownMenuItem(
+                          value: "EN REVISIÓN",
+                          child: Text("EN REVISIÓN"),
+                        ),
+                        DropdownMenuItem(
+                          value: "APROBADO POR DOCENTE",
+                          child: Text("APROBADO POR DOCENTE"),
+                        ),
+                        DropdownMenuItem(
+                          value: "RECHAZADO",
+                          child: Text("RECHAZADO"),
+                        ),
+                      ],
+                      onChanged: (nuevoEstado) {
+                        if (nuevoEstado != null && nuevoEstado != proyecto.estado) {
+                          onCambiarEstado(nuevoEstado);
+                        }
+                      },
+                    ),
                   ),
                 ],
-                onChanged: (nuevoEstado) {
-                  if (nuevoEstado != null && nuevoEstado != proyecto.estado) {
-                    onCambiarEstado(nuevoEstado);
-                  }
-                },
               ),
             ),
           ],
