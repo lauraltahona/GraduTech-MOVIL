@@ -95,7 +95,7 @@ class _MenuEstudianteState extends State<MenuEstudiante> {
           ),
           ListTile(
             leading: const Icon(Icons.verified),
-            title: const Text('Entregas'),
+            title: const Text('Revisión Jurado'),
             selected: _currentIndex == 4,
             onTap: () {
               Navigator.pop(context);

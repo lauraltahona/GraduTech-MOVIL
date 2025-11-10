@@ -21,7 +21,6 @@ class ProyectosAsignadosControllerJurado extends ChangeNotifier {
       
       // ✅ Filtrar solo los APROBADO POR DOCENTE
       proyectos = todosLosProyectos
-          .where((proyecto) => proyecto.estado == "APROBADO POR DOCENTE")
           .toList();
           
     } catch (e) {

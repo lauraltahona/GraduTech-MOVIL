@@ -4,6 +4,8 @@ class ProyectoAsignado {
   final String estudiante;
   final String correo;
   final String estado;
+  final String tipo; 
+  final String? rutaDocumento; 
   final int? idPlanEntrega;
 
   ProyectoAsignado({
@@ -12,6 +14,8 @@ class ProyectoAsignado {
     required this.estudiante,
     required this.correo,
     required this.estado,
+    required this.tipo, 
+    this.rutaDocumento, 
     this.idPlanEntrega,
   });
 
@@ -22,6 +26,8 @@ class ProyectoAsignado {
       estudiante: json['estudiante'] ?? '',
       correo: json['correo'] ?? '',
       estado: json['estado'] ?? 'PENDIENTE',
+      tipo: json['tipo'] ?? '', 
+      rutaDocumento: json['rutaDocumento'], 
       idPlanEntrega: json['idPlanEntrega'],
     );
   }
@@ -33,6 +39,8 @@ class ProyectoAsignado {
       'estudiante': estudiante,
       'correo': correo,
       'estado': estado,
+      'tipo': tipo, 
+      'rutaDocumento': rutaDocumento, 
       'idPlanEntrega': idPlanEntrega,
     };
   }
@@ -43,6 +51,8 @@ class ProyectoAsignado {
     String? estudiante,
     String? correo,
     String? estado,
+    String? tipo,
+    String? rutaDocumento,
     int? idPlanEntrega,
   }) {
     return ProyectoAsignado(
@@ -51,6 +61,8 @@ class ProyectoAsignado {
       estudiante: estudiante ?? this.estudiante,
       correo: correo ?? this.correo,
       estado: estado ?? this.estado,
+      tipo: tipo ?? this.tipo,
+      rutaDocumento: rutaDocumento ?? this.rutaDocumento,
       idPlanEntrega: idPlanEntrega ?? this.idPlanEntrega,
     );
   }

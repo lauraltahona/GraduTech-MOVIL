@@ -14,18 +14,12 @@ class MiProyectoCard extends StatelessWidget {
     required this.onEditar,
   });
 
-  Future<void> _abrirDocumento(String? ruta) async {
-    if (ruta == null) return;
-    
-    final String baseUrl = dotenv.env['IP'] ?? '';
-    final Uri url = Uri.parse('$baseUrl$ruta');
-
-    try {
-      if (await canLaunchUrl(url)) {
-        await launchUrl(url, mode: LaunchMode.externalApplication);
-      }
-    } catch (e) {
-      debugPrint('Error al abrir documento: $e');
+  Future<void> _abrirDocumento(String ruta) async {
+    final url = ruta.startsWith('http') 
+          ? Uri.parse(ruta)
+          : Uri.parse('${dotenv.env['IP']}$ruta'); 
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
     }
   }
 
