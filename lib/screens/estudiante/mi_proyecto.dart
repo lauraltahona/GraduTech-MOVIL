@@ -52,7 +52,13 @@ class _MiProyectoScreenState extends State<MiProyectoScreen> {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        controller.error!,
+                        "Todavía no has registrado un proyecto.",
+                        style: const TextStyle(color: Color(0xFF424242)),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        "Si ya lo registraste, actualiza la página o intenta registrar nuevamente.",
+                        textAlign: TextAlign.center,
                         style: const TextStyle(color: Color(0xFF424242)),
                       ),
                       const SizedBox(height: 16),

@@ -22,7 +22,7 @@ class PlanEntrega {
       idPlanEntrega: json['id_plan_entrega'],
       idProyecto: json['id_proyecto'] ?? 0,
       nroEntrega: json['nro_entrega'] ?? 0,
-      titulo: json['titulo'] ?? '',
+      titulo: json['title'] ?? '',
       descripcion: json['descripcion'] ?? '',
       fechaLimite: DateTime.parse(json['fecha_limite']),
       createdAt: json['createdAt'] != null 
@@ -36,7 +36,7 @@ class PlanEntrega {
       if (idPlanEntrega != null) 'id_plan_entrega': idPlanEntrega,
       'id_proyecto': idProyecto,
       'nro_entrega': nroEntrega,
-      'titulo': titulo,
+      'title': titulo,
       'descripcion': descripcion,
       'fecha_limite': fechaLimite.toIso8601String(),
     };

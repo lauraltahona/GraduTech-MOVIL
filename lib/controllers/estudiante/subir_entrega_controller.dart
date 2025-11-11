@@ -23,6 +23,7 @@ class SubirEntregaController extends ChangeNotifier {
 
     try {
       entregasAnteriores = await _service.obtenerEntregasPorPlan(idPlanEntrega);
+      print("Entregas anteriores cargadas en controller: $entregasAnteriores");
     } catch (e) {
       errorMessage = e.toString();
       debugPrint("Error al cargar entregas anteriores: $e");
