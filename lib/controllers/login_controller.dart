@@ -27,13 +27,11 @@ class LoginController {
 
       print('Login exitoso: ID=$idUsuario, Rol=$rol');
 
-      // Guardamos los datos localmente
       final prefs = await SharedPreferences.getInstance();
       await prefs.setInt('idUsuario', idUsuario);
       await prefs.setString('rol', rol);
       if (token != null) await prefs.setString('token', token);
 
-      // Redirección según rol
       switch (rol) {
         case 'Estudiante':
           Navigator.pushReplacementNamed(context, '/homeEstudiante');

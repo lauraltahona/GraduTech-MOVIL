@@ -62,7 +62,7 @@ class ListaEntregasAnteriores extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
-                            'titulo: ${entrega['titulo']}',
+                            'Esta es tu entrega!',
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

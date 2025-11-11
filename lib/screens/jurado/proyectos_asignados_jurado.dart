@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:proyecto_movil/controllers/jurado/proyectos_asignados_controller.dart';
-import 'package:proyecto_movil/screens/docente/plan_entrega.dart';
+import 'package:proyecto_movil/screens/jurado/info_proyecto.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:proyecto_movil/widgets/jurado/proyecto_asignado_jurado.dart';
 
@@ -32,7 +32,9 @@ class _ProyectosAsignadosScreenState extends State<ProyectosAsignadosScreen> {
       });
 
       if (mounted) {
-        await context.read<ProyectosAsignadosControllerJurado>().cargarProyectos(id);
+        await context
+            .read<ProyectosAsignadosControllerJurado>()
+            .cargarProyectos(id);
       }
     }
   }
@@ -45,17 +47,15 @@ class _ProyectosAsignadosScreenState extends State<ProyectosAsignadosScreen> {
     }
   }
 
-  void _verProyecto(int idProyecto, String correo) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => PlanearEntregaScreen(
-          idProyecto: idProyecto,
-          correoEstudiante: correo,
-        ),
-      ),
-    );
-  }
+  void _verProyecto(dynamic proyecto) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => InfoProyectoScreen(proyecto: proyecto),
+    ),
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -146,8 +146,7 @@ class _ProyectosAsignadosScreenState extends State<ProyectosAsignadosScreen> {
 
                 return ProyectoAsignadoCard(
                   proyecto: proyecto,
-                  onVerProyecto: () =>
-                      _verProyecto(proyecto.idProyecto, proyecto.correo),
+                  onVerProyecto: () => _verProyecto(proyecto),
                   onCambiarEstado: (nuevoEstado) {
                     controller.cambiarEstado(proyecto.idProyecto, nuevoEstado);
                   },
