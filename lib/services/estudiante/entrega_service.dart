@@ -38,6 +38,7 @@ class EntregaService {
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
+      print("esto llega al servicio: $data");
       return List<Map<String, dynamic>>.from(data);
     } else {
       throw Exception("Error al obtener las entregas");
@@ -52,6 +53,7 @@ class EntregaService {
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
+      print("Entregas por plan desde el servicio: $data");
       return List<Map<String, dynamic>>.from(data);
     } else {
       throw Exception("Error al obtener entregas anteriores");
