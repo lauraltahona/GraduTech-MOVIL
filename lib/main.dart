@@ -5,6 +5,7 @@ import 'package:proyecto_movil/controllers/docente/entregas_plan_controller.dart
 import 'package:proyecto_movil/controllers/docente/plan_entrega_controller.dart';
 import 'package:proyecto_movil/controllers/docente/proyectos_asignados_controller.dart';
 import 'package:proyecto_movil/controllers/estudiante/calendario_controller.dart';
+import 'package:proyecto_movil/controllers/estudiante/editar_proyecto_controller.dart';
 import 'package:proyecto_movil/controllers/estudiante/mi_proyecto_controller.dart';
 import 'package:proyecto_movil/controllers/estudiante/revision_jurado_controller.dart';
 import 'package:proyecto_movil/controllers/jurado/proyectos_asignados_controller.dart';
@@ -19,6 +20,7 @@ import 'package:proyecto_movil/screens/jurado/home_jurado.dart';
 import 'package:proyecto_movil/screens/login_screen.dart';
 import 'package:proyecto_movil/screens/repositorio/home_repo.dart';
 import 'package:proyecto_movil/controllers/repositorio/repositorio_controller.dart';
+import 'package:proyecto_movil/controllers/estudiante/editar_proyecto_controller.dart';
 import 'package:proyecto_movil/services/notificacion/notificacion_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';

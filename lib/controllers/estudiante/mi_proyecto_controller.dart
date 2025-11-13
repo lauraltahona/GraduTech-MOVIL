@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_movil/services/estudiante/proyecto_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MiProyectoController extends ChangeNotifier {
   final ProyectoService _service = ProyectoService();
@@ -13,6 +14,12 @@ class MiProyectoController extends ChangeNotifier {
       error = null;
       notifyListeners();
       proyecto = await _service.obtenerProyecto(idUsuario);
+      if (proyecto?['idProyecto'] != null) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setInt('idProyecto', proyecto!['idProyecto']);
+      }
+
+      print('✅ Proyecto cargado: $proyecto');
       cargando = false;
       notifyListeners();
     } catch (e) {
@@ -25,7 +32,7 @@ class MiProyectoController extends ChangeNotifier {
   // Acepta valores nullable y maneja errores
   String formatearFecha(dynamic fecha) {
     if (fecha == null) return "Fecha no disponible";
-    
+
     try {
       // Convierte a String si no lo es
       final fechaStr = fecha.toString();
@@ -38,8 +45,18 @@ class MiProyectoController extends ChangeNotifier {
 
   String _nombreMes(int mes) {
     const meses = [
-      "enero", "febrero", "marzo", "abril", "mayo", "junio",
-      "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+      "enero",
+      "febrero",
+      "marzo",
+      "abril",
+      "mayo",
+      "junio",
+      "julio",
+      "agosto",
+      "septiembre",
+      "octubre",
+      "noviembre",
+      "diciembre",
     ];
     return meses[mes - 1];
   }

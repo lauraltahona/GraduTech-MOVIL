@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:proyecto_movil/controllers/docente/proyectos_asignados_controller.dart';
 import 'package:proyecto_movil/controllers/jurado/proyectos_asignados_controller.dart';
 import 'package:proyecto_movil/screens/jurado/info_proyecto.dart';
+import 'package:proyecto_movil/widgets/docente/modal_programar_reunion.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:proyecto_movil/widgets/jurado/proyecto_asignado_jurado.dart';
 
@@ -56,7 +58,35 @@ class _ProyectosAsignadosScreenState extends State<ProyectosAsignadosScreen> {
   );
 }
 
+void _mostrarModalReunion(String correoEstudiante) {
+      showDialog(
+        context: context,
+        builder: (context) => ModalProgramarReunion(
+          correoEstudiante: correoEstudiante,
+          onEnviar: (fecha, hora, lugar) async {
+            final controller = context.read<ProyectosAsignadosController>();
+            await controller.programarReunion(
+              correo: correoEstudiante,
+              fecha: fecha,
+              hora: hora,
+              lugar: lugar,
+            );
 
+            if (mounted && controller.mensaje != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(controller.mensaje!),
+                  backgroundColor: controller.mensaje!.contains('✅') 
+                      ? Colors.green 
+                      : Colors.red,
+                ),
+              );
+              controller.limpiarMensaje();
+            }
+          },
+        ),
+      );
+    }
   @override
   Widget build(BuildContext context) {
     if (_idUsuario == null) {
@@ -147,6 +177,7 @@ class _ProyectosAsignadosScreenState extends State<ProyectosAsignadosScreen> {
                 return ProyectoAsignadoCard(
                   proyecto: proyecto,
                   onVerProyecto: () => _verProyecto(proyecto),
+                  onProgramarReunion: () => _mostrarModalReunion(proyecto.correo),
                   onCambiarEstado: (nuevoEstado) {
                     controller.cambiarEstado(proyecto.idProyecto, nuevoEstado);
                   },
