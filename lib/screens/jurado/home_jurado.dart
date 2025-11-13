@@ -136,7 +136,7 @@ class BienvenidaDocentePage extends StatelessWidget {
         // 🔹 Imagen de fondo
         Positioned.fill(
           child: Image.asset(
-            'assets/homedocente/FOTO-FACHADA-SABANAS112.jpg',
+            'assets/homeJurado/FOTO-GRADO.jpg',
             fit: BoxFit.cover,
           ),
         ),
