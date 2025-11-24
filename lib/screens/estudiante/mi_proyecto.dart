@@ -35,6 +35,24 @@ class _MiProyectoScreenState extends State<MiProyectoScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFE8F5E9), // Verde suave de fondo
+      floatingActionButton: SafeArea(
+    child: Container(
+      decoration: BoxDecoration(
+        color: Colors.green,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: IconButton(
+        icon: const Icon(Icons.home, color: Colors.white, size: 24),
+        onPressed: () {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            '/homeEstudiante',
+            (route) => false,
+          );
+        },
+      ),
+    ),
+  ),
       body: controller.cargando
           ? const Center(
               child: CircularProgressIndicator(
@@ -96,6 +114,7 @@ class _MiProyectoScreenState extends State<MiProyectoScreen> {
                 );
               },
             ),
+            
     );
   }
 }
