@@ -125,7 +125,6 @@ class _MenuEstudianteState extends State<MenuEstudiante> {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
-    // Los providers ya existen globalmente, solo usamos el Scaffold
     return Scaffold(
       appBar: AppBar(
         title: const Text('Menú Estudiante'),
@@ -146,6 +145,7 @@ class _MenuEstudianteState extends State<MenuEstudiante> {
         currentIndex: _currentIndex,
         onTap: (index) => setState(() => _currentIndex = index),
         selectedItemColor: Colors.green,
+        unselectedItemColor: Colors.green.shade200,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.folder_open),

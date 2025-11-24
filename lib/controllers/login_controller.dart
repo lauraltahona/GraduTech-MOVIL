@@ -10,11 +10,23 @@ class LoginController {
     String password,
     BuildContext context,
   ) async {
+    // Mostrar indicador de carga
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(
+          color: Colors.green,
+        ),
+      ),
+    );
+
     try {
       final result = await apiService.login(correo, password);
       final user = result['user'];
 
       if (user == null) {
+        Navigator.pop(context); // Cerrar el diálogo de carga
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Usuario no encontrado')),
         );
@@ -32,6 +44,13 @@ class LoginController {
       await prefs.setString('rol', rol);
       if (token != null) await prefs.setString('token', token);
 
+      // Cerrar el diálogo de carga
+      Navigator.pop(context);
+
+      // Pequeña espera para asegurar que todo está listo
+      await Future.delayed(const Duration(milliseconds: 100));
+
+      // Navegar según el rol
       switch (rol) {
         case 'Estudiante':
           Navigator.pushReplacementNamed(context, '/homeEstudiante');
@@ -45,21 +64,19 @@ class LoginController {
           Navigator.pushReplacementNamed(context, '/homeJurado');
           break;
 
-        case 'Administrador':
-          Navigator.pushReplacementNamed(context, '/menuAdmin');
-          break;
-
         default:
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Rol no reconocido: $rol')),
           );
       }
     } catch (e) {
+      Navigator.pop(context); // Cerrar el diálogo de carga en caso de error
       print('Error durante login: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Error: Credenciales incorrectas o servidor no disponible')),
+        const SnackBar(
+          content: Text('Error: Credenciales incorrectas o servidor no disponible'),
+        ),
       );
     }
   }
 }
-

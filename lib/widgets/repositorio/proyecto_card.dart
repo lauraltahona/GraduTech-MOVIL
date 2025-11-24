@@ -41,7 +41,11 @@ class ProyectoCard extends StatelessWidget {
           Container(
             width: double.infinity,
             decoration: const BoxDecoration(
-              color: Color(0xFF00A651), // Verde del diseño
+              gradient: LinearGradient(
+                  colors: [Colors.green, Color.fromARGB(255, 208, 218, 103)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ), 
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(12),
                 topRight: Radius.circular(12),

@@ -8,9 +8,9 @@ class ProyectosAsignadosService {
   // Obtener proyectos asignados al docente
   Future<List<Map<String, dynamic>>> obtenerProyectosAsignados(int idUsuario) async {
     final url = Uri.parse('$baseUrl/proyectos/asignados/$idUsuario');
-    
     final response = await http.get(url);
 
+print('Response status: ${response.body}');
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
       return List<Map<String, dynamic>>.from(data);
