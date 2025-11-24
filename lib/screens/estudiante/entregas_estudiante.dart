@@ -28,6 +28,24 @@ class _EntregasEstudianteScreenState extends State<EntregasEstudianteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: SafeArea(
+    child: Container(
+      decoration: BoxDecoration(
+        color: Colors.green,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: IconButton(
+        icon: const Icon(Icons.home, color: Colors.white, size: 24),
+        onPressed: () {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            '/homeEstudiante',
+            (route) => false,
+          );
+        },
+      ),
+    ),
+  ),
       body: Consumer<EntregasController>(
         builder: (context, controller, child) {
           if (controller.isLoading) {

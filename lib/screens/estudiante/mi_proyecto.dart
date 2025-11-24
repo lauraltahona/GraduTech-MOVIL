@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:proyecto_movil/controllers/estudiante/mi_proyecto_controller.dart';
+import 'package:proyecto_movil/screens/estudiante/editar_proyecto.dart';
 import 'package:proyecto_movil/widgets/estudiante/mi_proyecto_card.dart';
 
 class MiProyectoScreen extends StatefulWidget {
@@ -34,6 +35,24 @@ class _MiProyectoScreenState extends State<MiProyectoScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFE8F5E9), // Verde suave de fondo
+      floatingActionButton: SafeArea(
+    child: Container(
+      decoration: BoxDecoration(
+        color: Colors.green,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: IconButton(
+        icon: const Icon(Icons.home, color: Colors.white, size: 24),
+        onPressed: () {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            '/homeEstudiante',
+            (route) => false,
+          );
+        },
+      ),
+    ),
+  ),
       body: controller.cargando
           ? const Center(
               child: CircularProgressIndicator(
@@ -41,60 +60,61 @@ class _MiProyectoScreenState extends State<MiProyectoScreen> {
               ),
             )
           : controller.error != null
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.error_outline,
-                        color: Color(0xFFFF6F00), // Naranja
-                        size: 64,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        "Todavía no has registrado un proyecto.",
-                        style: const TextStyle(color: Color(0xFF424242)),
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        "Si ya lo registraste, actualiza la página o intenta registrar nuevamente.",
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(color: Color(0xFF424242)),
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: _cargarProyecto,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF2E7D32),
-                          foregroundColor: Colors.white,
-                        ),
-                        child: const Text('Reintentar'),
-                      ),
-                    ],
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.error_outline,
+                    color: Color(0xFFFF6F00), // Naranja
+                    size: 64,
                   ),
-                )
-              : controller.proyecto == null
-                  ? const Center(
-                      child: Text(
-                        "No se encontró proyecto.",
-                        style: TextStyle(color: Color(0xFF424242)),
-                      ),
-                    )
-                  : MiProyectoCard(
-                      proyecto: controller.proyecto!,
-                      fechaFormateada: controller.formatearFecha(
-                        controller.proyecto!['updatedAt'] ?? 
-                        controller.proyecto!['createdAt'],
-                      ),
-                      onEditar: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Función de editar en desarrollo'),
-                            backgroundColor: Color(0xFF2E7D32),
-                          ),
-                        );
-                      },
+                  const SizedBox(height: 16),
+                  Text(
+                    "Todavía no has registrado un proyecto.",
+                    style: const TextStyle(color: Color(0xFF424242)),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    "Si ya lo registraste, actualiza la página o intenta registrar nuevamente.",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Color(0xFF424242)),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _cargarProyecto,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF2E7D32),
+                      foregroundColor: Colors.white,
                     ),
+                    child: const Text('Reintentar'),
+                  ),
+                ],
+              ),
+            )
+          : controller.proyecto == null
+          ? const Center(
+              child: Text(
+                "No se encontró proyecto.",
+                style: TextStyle(color: Color(0xFF424242)),
+              ),
+            )
+          : MiProyectoCard(
+              proyecto: controller.proyecto!,
+              fechaFormateada: controller.formatearFecha(
+                controller.proyecto!['updatedAt'] ??
+                    controller.proyecto!['createdAt'],
+              ),
+              onEditar: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditarProyectoScreen(),
+                  ),
+                );
+              },
+            ),
+            
     );
   }
 }

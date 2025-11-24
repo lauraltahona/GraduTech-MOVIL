@@ -175,6 +175,10 @@ class ProyectoAsignadoCard extends StatelessWidget {
                           value: "RECHAZADO",
                           child: Text("RECHAZADO"),
                         ),
+                        DropdownMenuItem(
+                          value: "APROBADO",
+                          child: Text("APROBADO"),
+                        ),
                       ],
                       onChanged: (nuevoEstado) {
                         if (nuevoEstado != null && nuevoEstado != proyecto.estado) {

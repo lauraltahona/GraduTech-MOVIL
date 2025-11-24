@@ -183,6 +183,7 @@
                     onCambiarEstado: (nuevoEstado) {
                       controller.cambiarEstado(proyecto.idProyecto, nuevoEstado);
                     },
+                    
                     onPlanearEntrega: () => _irAPlanEntrega(proyecto.idProyecto, proyecto.correo),
                     onProgramarReunion: () => _mostrarModalReunion(proyecto.correo),
                   );

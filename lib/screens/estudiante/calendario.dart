@@ -27,7 +27,24 @@ class _CalendarioScreenState extends State<CalendarioScreen> {
     final controller = Provider.of<CalendarioController>(context);
 
     return Scaffold(
-      
+      floatingActionButton: SafeArea(
+    child: Container(
+      decoration: BoxDecoration(
+        color: Colors.green,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: IconButton(
+        icon: const Icon(Icons.home, color: Colors.white, size: 24),
+        onPressed: () {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            '/homeEstudiante',
+            (route) => false,
+          );
+        },
+      ),
+    ),
+  ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

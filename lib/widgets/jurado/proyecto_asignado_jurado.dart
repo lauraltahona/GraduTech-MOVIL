@@ -5,12 +5,14 @@ class ProyectoAsignadoCard extends StatelessWidget {
   final ProyectoAsignado proyecto;
   final VoidCallback onVerProyecto;
   final Function(String) onCambiarEstado;
+  final VoidCallback onProgramarReunion;
 
   const ProyectoAsignadoCard({
     super.key,
     required this.proyecto,
     required this.onVerProyecto,
     required this.onCambiarEstado,
+    required this.onProgramarReunion,
   });
 
   @override
@@ -69,25 +71,35 @@ class ProyectoAsignadoCard extends StatelessWidget {
             ),
             const SizedBox(height: 12),
 
-            // Botón de acción
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green[600],
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
+                  onPressed: onVerProyecto,
+                  icon: const Icon(Icons.upload_file, size: 18),
+                  label: const Text('Ver Proyecto'),
                 ),
-                onPressed: onVerProyecto,
-                icon: const Icon(Icons.visibility, size: 20),
-                label: const Text(
-                  'Ver Proyecto',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.amberAccent,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: onProgramarReunion,
+                  icon: const Icon(Icons.event, size: 18),
+                  label: const Text('Programar Reunión'),
                 ),
-              ),
+              ],
             ),
             const SizedBox(height: 12),
 
