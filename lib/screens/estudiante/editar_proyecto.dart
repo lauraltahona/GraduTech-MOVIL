@@ -5,8 +5,7 @@ class EditarProyectoScreen extends StatefulWidget {
   const EditarProyectoScreen({super.key});
 
   @override
-  State<EditarProyectoScreen> createState() =>
-      _EditarProyectoScreenState();
+  State<EditarProyectoScreen> createState() => _EditarProyectoScreenState();
 }
 
 class _EditarProyectoScreenState extends State<EditarProyectoScreen> {
@@ -139,8 +138,18 @@ class _EditarProyectoScreenState extends State<EditarProyectoScreen> {
                               child: const Text('Cancelar'),
                             ),
                             ElevatedButton(
-                              onPressed: () =>
-                                  controller.editarProyecto(context),
+                              onPressed: () async {
+                                final exito = await controller.editarProyecto(
+                                  context,
+                                );
+
+                                if (exito == true) {
+                                  Navigator.pop(
+                                    context,
+                                    true,
+                                  ); 
+                                }
+                              },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.green,
                               ),

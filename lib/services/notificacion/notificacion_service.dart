@@ -39,18 +39,80 @@ class NotificationService {
     }
   }
 
+  // NUEVO: Método para programar notificaciones de prueba
+  Future<void> programarNotificacionesPrueba() async {
+    final fechaPrueba = DateTime.now().add(Duration(minutes: 2));
+    
+    // Primera notificación de prueba (simula notificación del día)
+    await _notifications.zonedSchedule(
+      99999, // ID único para prueba
+      '📚 Entrega Hoy',
+      '¡No olvides entregar hoy!',
+      tz.TZDateTime.from(fechaPrueba, tz.local),
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'entregas_channel',
+          'Notificaciones de Entregas',
+          channelDescription: 'Notificaciones para recordar entregas de proyectos',
+          importance: Importance.high,
+          priority: Priority.high,
+          icon: '@mipmap/ic_launcher',
+        ),
+        iOS: DarwinNotificationDetails(
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+        ),
+      ),
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+    );
+
+    // Segunda notificación de prueba (simula recordatorio)
+    // La programamos 10 segundos después para que lleguen separadas
+    final fechaPrueba2 = DateTime.now().add(Duration(minutes: 2, seconds: 10));
+    
+    await _notifications.zonedSchedule(
+      99998, // ID diferente
+      '⏰ Recordatorio: Entrega Mañana',
+      '¡Tienes que entregar un avance del proyecto para mañana!',
+      tz.TZDateTime.from(fechaPrueba2, tz.local),
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'entregas_channel',
+          'Notificaciones de Entregas',
+          channelDescription: 'Notificaciones para recordar entregas de proyectos',
+          importance: Importance.high,
+          priority: Priority.high,
+          icon: '@mipmap/ic_launcher',
+        ),
+        iOS: DarwinNotificationDetails(
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+        ),
+      ),
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+    );
+
+    print('✅ Notificaciones de prueba programadas para: $fechaPrueba');
+  }
+
   Future<void> programarNotificacionEntrega({
     required int id,
     required String titulo,
     required String descripcion,
     required DateTime fechaEntrega,
   }) async {
-    // Programar notificación para el día de la entrega a las 5:15 PM
+    // Programar notificación para el día de la entrega a las 12:40 PM
     final fechaNotificacion = DateTime(
       fechaEntrega.year,
       fechaEntrega.month,
       fechaEntrega.day,
-      12, // Hora: 5 PM
+      12, // Hora: 12 PM
       40, // Minutos
     );
 
@@ -82,13 +144,13 @@ class NotificationService {
       );
     }
 
-    // Notificación recordatorio 1 día antes a las 5:00 PM
+    // Notificación recordatorio 1 día antes a las 7:00 am
     final fechaRecordatorio = DateTime(
       fechaEntrega.year,
       fechaEntrega.month,
       fechaEntrega.day - 1,
-      12, // 5 PM
-      40,
+      7, 
+      0,
     );
 
     if (fechaRecordatorio.isAfter(DateTime.now())) {

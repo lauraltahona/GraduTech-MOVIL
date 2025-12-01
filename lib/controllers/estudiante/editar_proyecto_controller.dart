@@ -32,7 +32,7 @@ class EditarProyectoController {
     }
   }
 
-  Future<void> editarProyecto(BuildContext context) async {
+  Future<bool> editarProyecto(BuildContext context) async {
     if (titleController.text.isEmpty ||
         descripcionController.text.isEmpty ||
         archivoSeleccionado == null) {
@@ -41,7 +41,7 @@ class EditarProyectoController {
           content: Text('Completa todos los campos y sube un archivo'),
         ),
       );
-      return;
+      return false;
     }
 
     final prefs = await SharedPreferences.getInstance();
@@ -52,7 +52,7 @@ class EditarProyectoController {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('No se pudo habilitar la edición del proyecto')),
       );
-      return;
+      return false;
     }
 
     final exito = await api.editarProyecto(
@@ -75,6 +75,7 @@ class EditarProyectoController {
         const SnackBar(content: Text('Error al editar el proyecto 😢')),
       );
     }
+    return exito;
   }
 
   void limpiarCampos() {

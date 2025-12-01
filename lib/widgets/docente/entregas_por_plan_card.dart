@@ -26,6 +26,7 @@ class EntregaCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      clipBehavior: Clip.hardEdge,
       margin: const EdgeInsets.only(bottom: 16),
       elevation: 2,
       child: Padding(
@@ -55,7 +56,7 @@ class EntregaCard extends StatelessWidget {
                       const SizedBox(height: 8),
                       Chip(
                         label: Text(
-                          'Estudiante Aldemar Quintero',
+                          'Estudiante Juan Peralta',
                           style: const TextStyle(color: Colors.white),
                         ),
                         backgroundColor: Colors.blue[700],
