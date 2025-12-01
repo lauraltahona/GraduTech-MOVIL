@@ -29,6 +29,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await NotificationService().initialize();
+  await NotificationService().programarNotificacionesPrueba();
   await initializeDateFormatting('es_ES', null);
   runApp(const MyApp());
 }
